@@ -1,4 +1,3 @@
-import Charts
 import SwiftData
 import SwiftUI
 import Model
@@ -29,128 +28,38 @@ public struct AnalyticsPage: View {
                 )
             } else {
                 Section {
-                    VStack(alignment: .leading, spacing: 18) {
-                        Text(selectedDimension.summaryTitle)
-                            .font(.headline)
-
-                        HStack(spacing: 12) {
-                            AnalyticsMetricView(
-                                title: "Income",
-                                value: selectedIncome.formatted(.currency(code: "USD")),
-                                caption: "Completed jobs",
-                                systemImage: "dollarsign.circle.fill",
-                                tint: .green
-                            )
-
-                            AnalyticsMetricView(
-                                title: "Jobs",
-                                value: "\(selectedCompletedJobs.count)",
-                                caption: "Finished work",
-                                systemImage: "checkmark.circle.fill",
-                                tint: .blue
-                            )
-                        }
-
-                        HStack(spacing: 12) {
-                            AnalyticsMetricView(
-                                title: "Scheduled",
-                                value: "\(selectedUpcomingJobs.count)",
-                                caption: "Upcoming",
-                                systemImage: "calendar.circle.fill",
-                                tint: .orange
-                            )
-
-                            AnalyticsMetricView(
-                                title: "Average",
-                                value: selectedAveragePrice.formatted(.currency(code: "USD")),
-                                caption: "Per completed job",
-                                systemImage: "dollarsign.arrow.circlepath",
-                                tint: .purple
-                            )
-                        }
-                    }
+                    AnalyticsSummaryView(
+                        timeDimension: selectedDimension,
+                        income: selectedIncome,
+                        completedJobCount: selectedCompletedJobs.count,
+                        upcomingJobCount: selectedUpcomingJobs.count,
+                        averagePrice: selectedAveragePrice
+                    )
                 }
 
                 Section("Income Trend") {
-                    if performanceData.allSatisfy({ $0.income == 0 }) {
-                        ContentUnavailableView(
-                            "No Completed Income",
-                            systemImage: "chart.bar.xaxis",
-                            description: Text("Completed jobs will appear in this chart.")
-                        )
-                    } else {
-                        Chart(performanceData) { item in
-                            BarMark(
-                                x: .value(selectedDimension.axisLabel, item.startDate, unit: selectedDimension.chartUnit),
-                                y: .value("Income", item.income)
-                            )
-                            .foregroundStyle(.green.gradient)
-                            .cornerRadius(4)
-                        }
-                        .chartYAxis {
-                            AxisMarks(position: .leading)
-                        }
-                        .frame(height: 180)
-                        .accessibilityLabel("Income chart")
-                    }
+                    IncomeTrendView(
+                        performanceData: performanceData,
+                        timeDimension: selectedDimension
+                    )
                 }
 
                 Section("Work Volume") {
-                    Chart(performanceData) { item in
-                        LineMark(
-                            x: .value(selectedDimension.axisLabel, item.startDate, unit: selectedDimension.chartUnit),
-                            y: .value("Jobs", item.jobCount)
-                        )
-                        .foregroundStyle(.blue)
-                        .symbol(Circle())
-
-                        AreaMark(
-                            x: .value(selectedDimension.axisLabel, item.startDate, unit: selectedDimension.chartUnit),
-                            y: .value("Jobs", item.jobCount)
-                        )
-                        .foregroundStyle(.blue.opacity(0.16))
-                    }
-                    .chartYAxis {
-                        AxisMarks(position: .leading)
-                    }
-                    .frame(height: 160)
-                    .accessibilityLabel("Completed jobs chart")
+                    WorkVolumeView(
+                        performanceData: performanceData,
+                        timeDimension: selectedDimension
+                    )
                 }
 
                 Section("Status") {
-                    ForEach(statusBreakdown) { item in
-                        StatusAnalyticsRowView(item: item, total: selectedJobs.count)
-                    }
+                    StatusAnalyticsStorageView(
+                        items: statusBreakdown,
+                        total: selectedJobs.count
+                    )
                 }
 
                 Section("Recent Income") {
-                    if recentCompletedJobs.isEmpty {
-                        ContentUnavailableView(
-                            "No Recent Income",
-                            systemImage: "tray",
-                            description: Text("Finished jobs with a price will appear here.")
-                        )
-                    } else {
-                        ForEach(recentCompletedJobs) { job in
-                            HStack(spacing: 12) {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .foregroundStyle(.green)
-
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(job.title)
-                                        .font(.headline)
-                                    Text(job.date, format: .dateTime.month(.abbreviated).day().year())
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
-                                }
-
-                                Spacer()
-
-                                Text(job.price.formatted(.currency(code: "USD")))
-                                    .font(.headline)
-                            }
-                        }
-                    }
+                    RecentIncomeView(jobs: recentCompletedJobs)
                 }
             }
         }
@@ -249,14 +158,3 @@ private extension AnalyticsPage {
         }
     }
 }
-
-
-
-private struct AnalyticsPerformanceItem: Identifiable {
-    let startDate: Date
-    let income: Double
-    let jobCount: Int
-
-    var id: Date { startDate }
-}
-

@@ -9,6 +9,9 @@ public struct ContactsPage: View {
 
     @State private var searchText = ""
     @State private var isPresentingCustomerForm = false
+    @Namespace private var addContactTransition
+
+    private let addContactSourceID = "add-contact-button"
 
     public init() {}
 
@@ -42,12 +45,14 @@ public struct ContactsPage: View {
                     Label("Add Contact", systemImage: "plus")
                 }
             }
+            .matchedTransitionSource(id: addContactSourceID, in: addContactTransition)
         }
         .navigationDestination(for: Customer.self) { customer in
             ContactPage(customer: customer)
         }
         .sheet(isPresented: $isPresentingCustomerForm) {
             ContactFormPage(mode: .create)
+                .navigationTransition(.zoom(sourceID: addContactSourceID, in: addContactTransition))
         }
     }
 }

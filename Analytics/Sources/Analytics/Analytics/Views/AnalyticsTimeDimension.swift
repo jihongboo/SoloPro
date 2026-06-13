@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 enum AnalyticsTimeDimension: String, CaseIterable, Identifiable {
     case day
     case month

@@ -8,6 +8,9 @@ public struct TodayJobsPage: View {
     @AppStorage("didSeedSampleJobs") private var didSeedSampleJobs = false
 
     @State private var isPresentingJobForm = false
+    @Namespace private var addJobTransition
+
+    private let addJobSourceID = "add-job-button"
 
     public init() {}
 
@@ -52,12 +55,14 @@ public struct TodayJobsPage: View {
                     Label("Add Job", systemImage: "plus")
                 }
             }
+            .matchedTransitionSource(id: addJobSourceID, in: addJobTransition)
         }
         .navigationDestination(for: Job.self) { job in
             JobPage(job: job)
         }
         .sheet(isPresented: $isPresentingJobForm) {
             JobFormPage(mode: .create)
+                .navigationTransition(.zoom(sourceID: addJobSourceID, in: addJobTransition))
         }
         .task {
             seedSampleJobsIfNeeded()

@@ -112,7 +112,7 @@ private extension JobsPage {
 ## 列表、导航与工具栏
 
 - 主列表优先使用 `List` 和 `Section`，iOS 页面使用 `.listStyle(.insetGrouped)`。
-- 空状态使用 `ContentUnavailableView`，文案说明用户下一步可以做什么。
+- 页面级空状态使用 `ContentUnavailableView` 放在 `List.overlay` 中，不要作为 `List` 的 row 或 `Section` 内容；文案说明用户下一步可以做什么。
 - 详情导航使用 `NavigationLink(value:)` + `.navigationDestination(for:)`。
 - 新增、筛选、删除等操作使用系统控件和 SF Symbols：`Label("Add Job", systemImage: "plus")`。
 - 删除入口需使用明确的破坏性语义：`Button(role: .destructive)`。
@@ -123,6 +123,7 @@ private extension JobsPage {
 - 图标使用 SF Symbols，按钮和菜单项优先使用 `Label`。
 - 行内容使用 `HStack` / `VStack` 组织，间距使用小而一致的数值，例如 `6`、`8`、`12`、`16`。
 - 金额、日期等展示使用 Swift 格式化 API：`.formatted(.currency(code: "USD"))`、`.dateTime.hour().minute()`。
+- 动画默认使用 `.smooth`，只有在交互语义明确需要其他曲线时才单独指定。
 - 不在业务页面中加入无关装饰或复杂自定义样式；保持原生、清晰、可扫描。
 
 ## 访问控制

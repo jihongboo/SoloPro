@@ -10,6 +10,9 @@ public struct JobsPage: View {
     @State private var statusFilter: JobStatusFilter = .all
     @State private var searchText = ""
     @State private var isPresentingJobForm = false
+    @Namespace private var addJobTransition
+
+    private let addJobSourceID = "add-job-button"
 
     public init() {}
 
@@ -61,6 +64,7 @@ public struct JobsPage: View {
                 } label: {
                     Label("Add Job", systemImage: "plus")
                 }
+                .matchedTransitionSource(id: addJobSourceID, in: addJobTransition)
             }
         }
         .navigationDestination(for: Job.self) { job in
@@ -68,6 +72,7 @@ public struct JobsPage: View {
         }
         .sheet(isPresented: $isPresentingJobForm) {
             JobFormPage(mode: .create)
+                .navigationTransition(.zoom(sourceID: addJobSourceID, in: addJobTransition))
         }
     }
 }
