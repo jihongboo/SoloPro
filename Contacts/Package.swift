@@ -16,13 +16,15 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(path: "../Model")
+        .package(path: "../Model"),
+        .package(path: "../Widgets"),
     ],
     targets: [
         .target(
             name: "Contacts",
             dependencies: [
-                .product(name: "Model", package: "Model")
+                .product(name: "Widgets", package: "Widgets"),
+                .product(name: "Model", package: "Model"),
             ]
         )
     ]

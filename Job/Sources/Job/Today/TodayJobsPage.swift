@@ -57,7 +57,7 @@ public struct TodayJobsPage: View {
             JobPage(job: job)
         }
         .sheet(isPresented: $isPresentingJobForm) {
-            JobFormView(mode: .create)
+            JobFormPage(mode: .create)
         }
         .task {
             seedSampleJobsIfNeeded()

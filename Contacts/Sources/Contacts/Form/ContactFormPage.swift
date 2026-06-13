@@ -1,6 +1,7 @@
 import SwiftData
 import SwiftUI
 import Model
+import Widgets
 
 struct ContactFormPage: View {
     @Environment(\.modelContext) private var modelContext
@@ -12,7 +13,10 @@ struct ContactFormPage: View {
     @State private var phone = ""
     @State private var email = ""
     @State private var address = ""
+    @State private var latitude: Double?
+    @State private var longitude: Double?
     @State private var notes = ""
+    @State private var isPresentingLocationSearch = false
 
     private var canSave: Bool {
         !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -34,8 +38,33 @@ struct ContactFormPage: View {
                 }
 
                 Section("Location") {
-                    TextField("Address", text: $address, axis: .vertical)
-                        .textContentType(.fullStreetAddress)
+                    Button {
+                        isPresentingLocationSearch = true
+                    } label: {
+                        HStack {
+                            Label {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(address.isEmpty ? "Add Location" : "Location")
+
+                                    if !address.isEmpty {
+                                        Text(address)
+                                            .font(.subheadline)
+                                            .foregroundStyle(.secondary)
+                                            .lineLimit(2)
+                                    }
+                                }
+                            } icon: {
+                                Image(systemName: "mappin.and.ellipse")
+                            }
+
+                            Spacer()
+
+                            Image(systemName: "chevron.right")
+                                .font(.footnote.weight(.semibold))
+                                .foregroundStyle(.tertiary)
+                        }
+                    }
+                    .foregroundStyle(.primary)
                 }
 
                 Section("Notes") {
@@ -58,6 +87,13 @@ struct ContactFormPage: View {
                 }
             }
             .onAppear(perform: populateFields)
+            .sheet(isPresented: $isPresentingLocationSearch) {
+                LocationSearchPage(
+                    address: $address,
+                    latitude: $latitude,
+                    longitude: $longitude
+                )
+            }
         }
     }
 }
@@ -80,6 +116,8 @@ private extension ContactFormPage {
         phone = customer.phone ?? ""
         email = customer.email ?? ""
         address = customer.address ?? ""
+        latitude = customer.latitude
+        longitude = customer.longitude
         notes = customer.notes ?? ""
     }
 
@@ -97,6 +135,8 @@ private extension ContactFormPage {
                 phone: cleanPhone.nilIfEmpty,
                 email: cleanEmail.nilIfEmpty,
                 address: cleanAddress.nilIfEmpty,
+                latitude: cleanAddress.isEmpty ? nil : latitude,
+                longitude: cleanAddress.isEmpty ? nil : longitude,
                 notes: cleanNotes.nilIfEmpty
             )
             modelContext.insert(customer)
@@ -105,6 +145,8 @@ private extension ContactFormPage {
             customer.phone = cleanPhone.nilIfEmpty
             customer.email = cleanEmail.nilIfEmpty
             customer.address = cleanAddress.nilIfEmpty
+            customer.latitude = cleanAddress.isEmpty ? nil : latitude
+            customer.longitude = cleanAddress.isEmpty ? nil : longitude
             customer.notes = cleanNotes.nilIfEmpty
         }
 

@@ -67,7 +67,7 @@ public struct JobsPage: View {
             JobPage(job: job)
         }
         .sheet(isPresented: $isPresentingJobForm) {
-            JobFormView(mode: .create)
+            JobFormPage(mode: .create)
         }
     }
 }

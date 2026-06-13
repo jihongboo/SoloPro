@@ -15,6 +15,8 @@ public final class Customer {
     public var phone: String?
     public var email: String?
     public var address: String?
+    public var latitude: Double?
+    public var longitude: Double?
     public var notes: String?
     public var createdAt: Date
 
@@ -27,6 +29,8 @@ public final class Customer {
         phone: String? = nil,
         email: String? = nil,
         address: String? = nil,
+        latitude: Double? = nil,
+        longitude: Double? = nil,
         notes: String? = nil,
         createdAt: Date = Date(),
         jobs: [Job] = []
@@ -36,6 +40,8 @@ public final class Customer {
         self.phone = phone
         self.email = email
         self.address = address
+        self.latitude = latitude
+        self.longitude = longitude
         self.notes = notes
         self.createdAt = createdAt
         self.jobs = jobs

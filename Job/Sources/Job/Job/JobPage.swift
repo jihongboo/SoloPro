@@ -77,7 +77,7 @@ struct JobPage: View {
             }
         }
         .sheet(isPresented: $isPresentingEditForm) {
-            JobFormView(mode: .edit(job))
+            JobFormPage(mode: .edit(job))
         }
     }
 }

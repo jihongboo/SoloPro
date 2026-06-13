@@ -1,6 +1,7 @@
 import SwiftData
 import SwiftUI
 import Model
+import Widgets
 
 public struct ContactsPage: View {
     @Environment(\.modelContext) private var modelContext
@@ -23,7 +24,7 @@ public struct ContactsPage: View {
                 } else {
                     ForEach(filteredCustomers) { customer in
                         NavigationLink(value: customer) {
-                            ContactRowView(customer: customer)
+                            CustomerSuggestionRow(customer: customer)
                         }
                     }
                     .onDelete(perform: deleteCustomers)

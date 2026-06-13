@@ -12,6 +12,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>Job</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>JobFeature</key>
 		<dict>
 			<key>primary</key>
