@@ -1,0 +1,345 @@
+{
+  "builtTestProducts" : [
+
+  ],
+  "copyCommands" : {
+
+  },
+  "explicitTargetDependencyImportCheckingMode" : {
+    "none" : {
+
+    }
+  },
+  "generatedSourceTargetSet" : [
+
+  ],
+  "pluginDescriptions" : [
+
+  ],
+  "swiftCommands" : {
+    "C.JobFeature-arm64-apple-macosx-debug.module" : {
+      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "fileList" : "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/sources",
+      "importPath" : "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/JobViews.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Models.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/JobDetailView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/JobFormView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/JobRowView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/JobsSummaryView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/PreviewSampleData.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/StatusBadgeView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/SummaryMetricView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "JobFeature",
+      "moduleOutputPath" : "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/Modules/JobFeature.swiftmodule",
+      "objects" : [
+        "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobViews.swift.o",
+        "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/Models.swift.o",
+        "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobDetailView.swift.o",
+        "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobFormView.swift.o",
+        "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobRowView.swift.o",
+        "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobsSummaryView.swift.o",
+        "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/PreviewSampleData.swift.o",
+        "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/StatusBadgeView.swift.o",
+        "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/SummaryMetricView.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx10.13",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-index-store-path",
+        "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j12",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/include/JobFeature-Swift.h",
+        "-swift-version",
+        "6",
+        "-plugin-path",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "jobfeature",
+        "-disable-sandbox"
+      ],
+      "outputFileMapPath" : "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobViews.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/Models.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobDetailView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobFormView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobRowView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobsSummaryView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/PreviewSampleData.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/StatusBadgeView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/SummaryMetricView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/Modules/JobFeature.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/JobViews.swift",
+        "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Models.swift",
+        "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/JobDetailView.swift",
+        "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/JobFormView.swift",
+        "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/JobRowView.swift",
+        "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/JobsSummaryView.swift",
+        "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/PreviewSampleData.swift",
+        "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/StatusBadgeView.swift",
+        "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/SummaryMetricView.swift"
+      ],
+      "tempsPath" : "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build",
+      "wholeModuleOptimization" : false
+    }
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "swiftTargetScanArgs" : {
+    "JobFeature" : [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "JobFeature",
+      "-package-name",
+      "jobfeature",
+      "-c",
+      "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/JobViews.swift",
+      "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Models.swift",
+      "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/JobDetailView.swift",
+      "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/JobFormView.swift",
+      "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/JobRowView.swift",
+      "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/JobsSummaryView.swift",
+      "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/PreviewSampleData.swift",
+      "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/StatusBadgeView.swift",
+      "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/SummaryMetricView.swift",
+      "-I",
+      "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx10.13",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-index-store-path",
+      "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j12",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/include/JobFeature-Swift.h",
+      "-swift-version",
+      "6",
+      "-plugin-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-I",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "jobfeature",
+      "-disable-sandbox",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ]
+  },
+  "targetDependencyMap" : {
+    "JobFeature" : [
+
+    ]
+  },
+  "testDiscoveryCommands" : {
+
+  },
+  "testEntryPointCommands" : {
+
+  },
+  "traitConfiguration" : {
+    "default" : {
+
+    }
+  },
+  "writeCommands" : {
+    "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/JobViews.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Models.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/JobDetailView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/JobFormView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/JobRowView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/JobsSummaryView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/PreviewSampleData.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/StatusBadgeView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/SummaryMetricView.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/sources"
+    },
+    "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt" : {
+      "alwaysOutOfDate" : true,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<swift-get-version>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+        }
+      ],
+      "outputFilePath" : "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+    }
+  }
+}

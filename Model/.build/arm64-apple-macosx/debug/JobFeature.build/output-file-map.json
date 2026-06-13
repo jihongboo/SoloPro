@@ -1,0 +1,68 @@
+{
+  "": {
+    "swift-dependencies": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/primary.swiftdeps"
+  },
+  "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/JobViews.swift": {
+    "dependencies": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobViews.d",
+    "object": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobViews.swift.o",
+    "swiftmodule": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobViews~partial.swiftmodule",
+    "swift-dependencies": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobViews.swiftdeps",
+    "diagnostics": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobViews.dia"
+  },
+  "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Models.swift": {
+    "dependencies": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/Models.d",
+    "object": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/Models.swift.o",
+    "swiftmodule": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/Models~partial.swiftmodule",
+    "swift-dependencies": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/Models.swiftdeps",
+    "diagnostics": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/Models.dia"
+  },
+  "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/JobDetailView.swift": {
+    "dependencies": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobDetailView.d",
+    "object": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobDetailView.swift.o",
+    "swiftmodule": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobDetailView~partial.swiftmodule",
+    "swift-dependencies": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobDetailView.swiftdeps",
+    "diagnostics": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobDetailView.dia"
+  },
+  "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/JobFormView.swift": {
+    "dependencies": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobFormView.d",
+    "object": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobFormView.swift.o",
+    "swiftmodule": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobFormView~partial.swiftmodule",
+    "swift-dependencies": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobFormView.swiftdeps",
+    "diagnostics": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobFormView.dia"
+  },
+  "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/JobRowView.swift": {
+    "dependencies": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobRowView.d",
+    "object": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobRowView.swift.o",
+    "swiftmodule": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobRowView~partial.swiftmodule",
+    "swift-dependencies": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobRowView.swiftdeps",
+    "diagnostics": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobRowView.dia"
+  },
+  "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/JobsSummaryView.swift": {
+    "dependencies": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobsSummaryView.d",
+    "object": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobsSummaryView.swift.o",
+    "swiftmodule": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobsSummaryView~partial.swiftmodule",
+    "swift-dependencies": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobsSummaryView.swiftdeps",
+    "diagnostics": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/JobsSummaryView.dia"
+  },
+  "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/PreviewSampleData.swift": {
+    "dependencies": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/PreviewSampleData.d",
+    "object": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/PreviewSampleData.swift.o",
+    "swiftmodule": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/PreviewSampleData~partial.swiftmodule",
+    "swift-dependencies": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/PreviewSampleData.swiftdeps",
+    "diagnostics": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/PreviewSampleData.dia"
+  },
+  "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/StatusBadgeView.swift": {
+    "dependencies": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/StatusBadgeView.d",
+    "object": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/StatusBadgeView.swift.o",
+    "swiftmodule": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/StatusBadgeView~partial.swiftmodule",
+    "swift-dependencies": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/StatusBadgeView.swiftdeps",
+    "diagnostics": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/StatusBadgeView.dia"
+  },
+  "/Users/jihongbo/Developer/SoloPro/JobFeature/Sources/JobFeature/Views/SummaryMetricView.swift": {
+    "dependencies": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/SummaryMetricView.d",
+    "object": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/SummaryMetricView.swift.o",
+    "swiftmodule": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/SummaryMetricView~partial.swiftmodule",
+    "swift-dependencies": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/SummaryMetricView.swiftdeps",
+    "diagnostics": "/Users/jihongbo/Developer/SoloPro/JobFeature/.build/arm64-apple-macosx/debug/JobFeature.build/SummaryMetricView.dia"
+  }
+}

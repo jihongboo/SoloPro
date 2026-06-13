@@ -6,8 +6,21 @@
 	objectVersion = 90;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		FFB778B82FDD50F90047AD2D /* Model in Frameworks */ = {isa = PBXBuildFile; productRef = FFB778B72FDD50F90047AD2D /* Model */; };
+		FFB778BB2FDD51030047AD2D /* Job in Frameworks */ = {isa = PBXBuildFile; productRef = FFB778BA2FDD51030047AD2D /* Job */; };
+		FFB778BE2FDD510C0047AD2D /* Contacts in Frameworks */ = {isa = PBXBuildFile; productRef = FFB778BD2FDD510C0047AD2D /* Contacts */; };
+		FFB778C52FDD52450047AD2D /* CODE_STYLE.md in Resources */ = {isa = PBXBuildFile; fileRef = FFB778C12FDD52450047AD2D /* CODE_STYLE.md */; };
+		FFB778C62FDD52450047AD2D /* Technical Design.md in Resources */ = {isa = PBXBuildFile; fileRef = FFB778C32FDD52450047AD2D /* Technical Design.md */; };
+		FFB778C72FDD52450047AD2D /* Product Requirements Document.md in Resources */ = {isa = PBXBuildFile; fileRef = FFB778C22FDD52450047AD2D /* Product Requirements Document.md */; };
+		FFB778CA2FDD573E0047AD2D /* Analytics in Frameworks */ = {isa = PBXBuildFile; productRef = FFB778C92FDD573E0047AD2D /* Analytics */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		000000000000000000000120 /* SoloPro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoloPro.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFB778C12FDD52450047AD2D /* CODE_STYLE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CODE_STYLE.md; sourceTree = "<group>"; };
+		FFB778C22FDD52450047AD2D /* Product Requirements Document.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Product Requirements Document.md"; sourceTree = "<group>"; };
+		FFB778C32FDD52450047AD2D /* Technical Design.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Technical Design.md"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -22,6 +35,10 @@
 		000000000000000130000000 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
+				FFB778BB2FDD51030047AD2D /* Job in Frameworks */,
+				FFB778CA2FDD573E0047AD2D /* Analytics in Frameworks */,
+				FFB778B82FDD50F90047AD2D /* Model in Frameworks */,
+				FFB778BE2FDD510C0047AD2D /* Contacts in Frameworks */,
 			);
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -30,6 +47,7 @@
 		000000000000000000000001 = {
 			isa = PBXGroup;
 			children = (
+				FFB778C42FDD52450047AD2D /* Documents */,
 				000000000000000000000010 /* SoloPro */,
 				000000000000000000000020 /* Products */,
 			);
@@ -41,6 +59,16 @@
 				000000000000000000000120 /* SoloPro.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		FFB778C42FDD52450047AD2D /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				FFB778C12FDD52450047AD2D /* CODE_STYLE.md */,
+				FFB778C22FDD52450047AD2D /* Product Requirements Document.md */,
+				FFB778C32FDD52450047AD2D /* Technical Design.md */,
+			);
+			path = Documents;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -60,6 +88,12 @@
 				000000000000000000000010 /* SoloPro */,
 			);
 			name = SoloPro;
+			packageProductDependencies = (
+				FFB778B72FDD50F90047AD2D /* Model */,
+				FFB778BA2FDD51030047AD2D /* Job */,
+				FFB778BD2FDD510C0047AD2D /* Contacts */,
+				FFB778C92FDD573E0047AD2D /* Analytics */,
+			);
 			productName = MyApp;
 			productReference = 000000000000000000000120 /* SoloPro.app */;
 			productType = "com.apple.product-type.application";
@@ -88,6 +122,11 @@
 			);
 			mainGroup = 000000000000000000000001;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				FFB778B92FDD51030047AD2D /* XCLocalSwiftPackageReference "Job" */,
+				FFB778BC2FDD510C0047AD2D /* XCLocalSwiftPackageReference "Contacts" */,
+				FFB778C82FDD573E0047AD2D /* XCLocalSwiftPackageReference "Analytics" */,
+			);
 			preferredProjectObjectVersion = 90;
 			productRefGroup = 000000000000000000000020 /* Products */;
 			projectDirPath = "";
@@ -102,6 +141,9 @@
 		000000000000000140000000 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			files = (
+				FFB778C52FDD52450047AD2D /* CODE_STYLE.md in Resources */,
+				FFB778C62FDD52450047AD2D /* Technical Design.md in Resources */,
+				FFB778C72FDD52450047AD2D /* Product Requirements Document.md in Resources */,
 			);
 		};
 /* End PBXResourcesBuildPhase section */
@@ -179,7 +221,10 @@
 				PROJECT_UNIQUE_VALUE = VU3XZQL1;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
 				WATCHOS_DEPLOYMENT_TARGET = 27.0;
 				XROS_DEPLOYMENT_TARGET = 27.0;
 			};
@@ -241,7 +286,10 @@
 				MTL_FAST_MATH = YES;
 				PROJECT_UNIQUE_VALUE = VU3XZQL1;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_VERSION = 6.0;
 				WATCHOS_DEPLOYMENT_TARGET = 27.0;
 				XROS_DEPLOYMENT_TARGET = 27.0;
 			};
@@ -266,8 +314,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 26.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "devplaceholder.$(PROJECT_UNIQUE_VALUE:identifier).$(PRODUCT_NAME:identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -275,12 +325,10 @@
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 26.6;
 			};
 			name = Debug;
 		};
@@ -303,8 +351,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 26.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "devplaceholder.$(PROJECT_UNIQUE_VALUE:identifier).$(PRODUCT_NAME:identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -312,12 +362,10 @@
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 26.6;
 			};
 			name = Release;
 		};
@@ -341,6 +389,40 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		FFB778B92FDD51030047AD2D /* XCLocalSwiftPackageReference "Job" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Job;
+		};
+		FFB778BC2FDD510C0047AD2D /* XCLocalSwiftPackageReference "Contacts" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Contacts;
+		};
+		FFB778C82FDD573E0047AD2D /* XCLocalSwiftPackageReference "Analytics" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Analytics;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FFB778B72FDD50F90047AD2D /* Model */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Model;
+		};
+		FFB778BA2FDD51030047AD2D /* Job */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Job;
+		};
+		FFB778BD2FDD510C0047AD2D /* Contacts */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Contacts;
+		};
+		FFB778C92FDD573E0047AD2D /* Analytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Analytics;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 000000000000000000000000 /* Project object */;
 }
