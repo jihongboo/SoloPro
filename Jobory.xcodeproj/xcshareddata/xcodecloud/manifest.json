@@ -2,6 +2,10 @@
   "id" : "4ae0abd1-3bb2-4d31-be36-4f9e195ed46b",
   "targets" : [
     {
+      "id" : "57709834-83f0-4020-b24c-1d0224923dba",
+      "name" : "Jobory"
+    },
+    {
       "id" : "f545f1c9-014b-4144-ba6a-6b93ff9d1c11",
       "name" : "SoloPro"
     },
