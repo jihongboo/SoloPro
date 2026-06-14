@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "000000000000000100000000"
-               BuildableName = "SoloPro.app"
-               BlueprintName = "SoloPro"
-               ReferencedContainer = "container:SoloPro.xcodeproj">
+               BuildableName = "WorkPilot.app"
+               BlueprintName = "WorkPilot"
+               ReferencedContainer = "container:WorkPilot.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,9 +46,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "000000000000000100000000"
-            BuildableName = "SoloPro.app"
-            BlueprintName = "SoloPro"
-            ReferencedContainer = "container:SoloPro.xcodeproj">
+            BuildableName = "WorkPilot.app"
+            BlueprintName = "WorkPilot"
+            ReferencedContainer = "container:WorkPilot.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -63,9 +63,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "000000000000000100000000"
-            BuildableName = "SoloPro.app"
-            BlueprintName = "SoloPro"
-            ReferencedContainer = "container:SoloPro.xcodeproj">
+            BuildableName = "WorkPilot.app"
+            BlueprintName = "WorkPilot"
+            ReferencedContainer = "container:WorkPilot.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
