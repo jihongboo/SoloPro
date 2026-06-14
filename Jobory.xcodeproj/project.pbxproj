@@ -17,6 +17,7 @@
 		FFFA60C72FDF0B35004075FC /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFFA60C62FDF0B35004075FC /* WidgetKit.framework */; };
 		FFFA60C92FDF0B35004075FC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFFA60C82FDF0B35004075FC /* SwiftUI.framework */; };
 		FFFA60DA2FDF0B36004075FC /* JoboryWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FFFA60C42FDF0B35004075FC /* JoboryWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FFFA610C2FDF1B8E004075FC /* Model in Frameworks */ = {isa = PBXBuildFile; productRef = FFFA610B2FDF1B8E004075FC /* Model */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +92,7 @@
 		FFFA60C12FDF0B35004075FC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
+				FFFA610C2FDF1B8E004075FC /* Model in Frameworks */,
 				FFFA60C92FDF0B35004075FC /* SwiftUI.framework in Frameworks */,
 				FFFA60C72FDF0B35004075FC /* WidgetKit.framework in Frameworks */,
 			);
@@ -183,6 +185,9 @@
 				FFFA60CA2FDF0B35004075FC /* JoboryWidget */,
 			);
 			name = JoboryWidgetExtension;
+			packageProductDependencies = (
+				FFFA610B2FDF1B8E004075FC /* Model */,
+			);
 			productName = JoboryWidgetExtension;
 			productReference = FFFA60C42FDF0B35004075FC /* JoboryWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -218,6 +223,7 @@
 				FFB778B92FDD51030047AD2D /* XCLocalSwiftPackageReference "Job" */,
 				FFB778BC2FDD510C0047AD2D /* XCLocalSwiftPackageReference "Contacts" */,
 				FFB778C82FDD573E0047AD2D /* XCLocalSwiftPackageReference "Analytics" */,
+				FFFA610A2FDF1B8E004075FC /* XCLocalSwiftPackageReference "Model" */,
 			);
 			preferredProjectObjectVersion = 100;
 			productRefGroup = 000000000000000000000020 /* Products */;
@@ -601,6 +607,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Analytics;
 		};
+		FFFA610A2FDF1B8E004075FC /* XCLocalSwiftPackageReference "Model" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Model;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -619,6 +629,10 @@
 		FFB778C92FDD573E0047AD2D /* Analytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Analytics;
+		};
+		FFFA610B2FDF1B8E004075FC /* Model */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Model;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

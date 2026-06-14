@@ -12,6 +12,7 @@ import SwiftUI
 struct JoboryWidgetBundle: WidgetBundle {
     var body: some Widget {
         JoboryWidget()
+        TodayWidget()
         JoboryWidgetControl()
         JoboryWidgetLiveActivity()
     }
