@@ -79,9 +79,6 @@ public struct JobsPage: View {
                 }
             }
         }
-        .navigationDestination(for: Job.self) { job in
-            JobPage(job: job)
-        }
         .sheet(isPresented: $isPresentingDatePicker) {
             NavigationStack {
                 List {
