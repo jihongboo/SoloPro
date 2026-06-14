@@ -46,7 +46,13 @@ struct JobPage: View {
             Section("Status") {
                 Picker("Status", selection: $job.status) {
                     ForEach(JobStatus.allCases) { status in
-                        Label(status.title, systemImage: status.systemImage).tag(status)
+                        HStack {
+                            Circle()
+                                .fill(status.tint)
+                                .frame(width: 8, height: 8)
+                            Text(status.title)
+                        }
+                        .tag(status)
                     }
                 }
                 .pickerStyle(.inline)

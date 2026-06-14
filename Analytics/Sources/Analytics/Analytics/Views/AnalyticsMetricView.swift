@@ -28,6 +28,9 @@ struct AnalyticsMetricView: View {
                 .foregroundStyle(.secondary)
             
             AnimatedNumber(value)
+                .font(.title2.bold())
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
             
             Text(caption)
                 .font(.caption)

@@ -7,8 +7,10 @@ public struct JobsPage: View {
     @Query(sort: \Job.date) private var jobs: [Job]
 
     @State private var selectedDate = Date()
+    @State private var isDateFilterEnabled = false
     @State private var statusFilter: JobStatusFilter = .all
     @State private var searchText = ""
+    @State private var isPresentingDatePicker = false
     @State private var isPresentingJobForm = false
     @Namespace private var addJobTransition
 
@@ -18,47 +20,34 @@ public struct JobsPage: View {
 
     public var body: some View {
         List {
-            Section {
-                DatePicker(
-                    "Selected Date",
-                    selection: $selectedDate,
-                    displayedComponents: .date
-                )
-                .datePickerStyle(.graphical)
-            }
-
-            Section(listSectionTitle) {
-                if filteredJobs.isEmpty {
+            if filteredJobs.isEmpty {
+                Section {
                     ContentUnavailableView(
                         "No Jobs Found",
                         systemImage: "calendar",
                         description: Text(emptyStateDescription)
                     )
-                } else {
-                    ForEach(filteredJobs) { job in
-                        NavigationLink(value: job) {
-                            JobRowView(job: job)
+                }
+            } else {
+                ForEach(jobDateSections) { dateSection in
+                    Section(dateSection.title) {
+                        ForEach(dateSection.jobs) { job in
+                            NavigationLink(value: job) {
+                                JobRowView(job: job)
+                            }
+                        }
+                        .onDelete { offsets in
+                            deleteJobs(at: offsets, in: dateSection)
                         }
                     }
-                    .onDelete(perform: deleteJobs)
                 }
             }
         }
-        .listStyle(.insetGrouped)
+        .listStyle(.plain)
         .navigationTitle("All Jobs")
         .searchable(text: $searchText, prompt: "Search jobs")
         .toolbar {
-            ToolbarItemGroup(placement: .topBarTrailing) {
-                Menu {
-                    Picker("Status", selection: $statusFilter) {
-                        ForEach(JobStatusFilter.allCases) { filter in
-                            Label(filter.title, systemImage: filter.systemImage).tag(filter)
-                        }
-                    }
-                } label: {
-                    Label("Filter", systemImage: "line.3.horizontal.decrease.circle")
-                }
-
+            ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     isPresentingJobForm = true
                 } label: {
@@ -66,9 +55,70 @@ public struct JobsPage: View {
                 }
                 .matchedTransitionSource(id: addJobSourceID, in: addJobTransition)
             }
+            
+            ToolbarItem {
+                Menu("Filters", systemImage: "line.3.horizontal.decrease") {
+                    Button(dateFilterTitle, systemImage: "calendar") {
+                        isPresentingDatePicker = true
+                    }
+
+                    if isDateFilterEnabled {
+                        Button("Clear Date Filter", systemImage: "calendar.badge.minus") {
+                            isDateFilterEnabled = false
+                        }
+                    }
+
+                    Menu("Status: \(statusFilter.title)", systemImage: statusFilter.systemImage) {
+                        Picker("Status", selection: $statusFilter) {
+                            ForEach(JobStatusFilter.allCases) { filter in
+                                Label(filter.title, systemImage: filter.systemImage)
+                                    .tag(filter)
+                            }
+                        }
+                    }
+                }
+            }
         }
         .navigationDestination(for: Job.self) { job in
             JobPage(job: job)
+        }
+        .sheet(isPresented: $isPresentingDatePicker) {
+            NavigationStack {
+                List {
+                    Section {
+                        DatePicker(
+                            "Date",
+                            selection: $selectedDate,
+                            displayedComponents: .date
+                        )
+                        .datePickerStyle(.graphical)
+                    }
+
+                    Section {
+                        Button("Show All Dates") {
+                            isDateFilterEnabled = false
+                            isPresentingDatePicker = false
+                        }
+                    }
+                }
+                .navigationTitle("Select Date")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            isDateFilterEnabled = true
+                            isPresentingDatePicker = false
+                        }
+                    }
+
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            isPresentingDatePicker = false
+                        }
+                    }
+                }
+            }
+            .presentationDetents([.medium, .large])
         }
         .sheet(isPresented: $isPresentingJobForm) {
             JobFormPage(mode: .create)
@@ -87,9 +137,22 @@ public struct JobsPage: View {
 private extension JobsPage {
     private var filteredJobs: [Job] {
         jobs.filter { job in
-            selectedDateInterval.contains(job.date) &&
+            dateFilterIncludes(job.date) &&
             statusFilter.includes(job.status) &&
             job.matchesSearch(searchText)
+        }
+    }
+
+    private var jobDateSections: [JobDateSection] {
+        let groupedJobs = Dictionary(grouping: filteredJobs) { job in
+            Calendar.current.startOfDay(for: job.date)
+        }
+
+        return groupedJobs.keys.sorted().map { date in
+            JobDateSection(
+                date: date,
+                jobs: groupedJobs[date, default: []].sorted { $0.date < $1.date }
+            )
         }
     }
 
@@ -101,8 +164,9 @@ private extension JobsPage {
         DateInterval(start: selectedDate, duration: 24 * 60 * 60)
     }
 
-    private var listSectionTitle: String {
-        "\(statusFilter.title) Jobs - \(selectedDate.formatted(.dateTime.month(.abbreviated).day().year()))"
+    private var dateFilterTitle: String {
+        guard isDateFilterEnabled else { return "All Dates" }
+        return selectedDate.formatted(.dateTime.month(.abbreviated).day().year())
     }
 
     private var emptyStateDescription: String {
@@ -113,9 +177,14 @@ private extension JobsPage {
         }
     }
 
-    private func deleteJobs(at offsets: IndexSet) {
+    private func dateFilterIncludes(_ date: Date) -> Bool {
+        guard isDateFilterEnabled else { return true }
+        return selectedDateInterval.contains(date)
+    }
+
+    private func deleteJobs(at offsets: IndexSet, in dateSection: JobDateSection) {
         for index in offsets {
-            modelContext.delete(filteredJobs[index])
+            modelContext.delete(dateSection.jobs[index])
         }
     }
 }
@@ -139,6 +208,17 @@ private extension Job {
             status.title,
             price.formatted(.currency(code: "USD"))
         ].compactMap { $0 }
+    }
+}
+
+private struct JobDateSection: Identifiable {
+    let date: Date
+    let jobs: [Job]
+
+    var id: Date { date }
+
+    var title: String {
+        date.formatted(.dateTime.weekday(.wide).month(.abbreviated).day().year())
     }
 }
 
@@ -170,9 +250,9 @@ private enum JobStatusFilter: String, CaseIterable, Identifiable {
         case .incomplete:
             "clock"
         case .completed:
-            "checkmark.circle"
+            JobStatus.completed.systemImage
         case .canceled:
-            "xmark.circle"
+            JobStatus.canceled.systemImage
         }
     }
 

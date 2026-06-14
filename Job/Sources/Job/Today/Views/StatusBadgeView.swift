@@ -5,11 +5,12 @@ struct StatusBadgeView: View {
     let status: JobStatus
 
     var body: some View {
-        Label(status.title, systemImage: status.systemImage)
+        Text(status.title)
             .font(.caption.weight(.semibold))
             .foregroundStyle(status.tint)
-            .labelStyle(.titleAndIcon)
-            .labelIconToTitleSpacing(2)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(status.tint.opacity(0.12), in: Capsule())
     }
 }
 

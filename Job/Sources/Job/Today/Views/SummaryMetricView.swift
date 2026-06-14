@@ -1,8 +1,9 @@
 import SwiftUI
+import Widgets
 
 struct SummaryMetricView: View {
     let title: String
-    let value: String
+    let value: AnimatedValue
     let caption: String
 
     var body: some View {
@@ -10,7 +11,7 @@ struct SummaryMetricView: View {
             Text(title)
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            Text(value)
+            AnimatedNumber(value)
                 .font(.title2.bold())
                 .lineLimit(1)
                 .minimumScaleFactor(0.75)
@@ -24,8 +25,16 @@ struct SummaryMetricView: View {
 
 #Preview {
     HStack(spacing: 12) {
-        SummaryMetricView(title: "Today", value: "3", caption: "Jobs")
-        SummaryMetricView(title: "Expected", value: "$375.00", caption: "Income")
+        SummaryMetricView(
+            title: "Today",
+            value: .number(3),
+            caption: "Jobs"
+        )
+        SummaryMetricView(
+            title: "Expected",
+            value: .currency(375),
+            caption: "Income"
+        )
     }
     .padding()
 }

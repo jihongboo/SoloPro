@@ -18,9 +18,6 @@ public struct AnimatedNumber: View {
     
     public var body: some View {
         text
-            .font(.title2.bold())
-            .lineLimit(1)
-            .minimumScaleFactor(0.7)
             .contentTransition(.numericText())
             .animation(.smooth, value: displayedValue)
             .onAppear {

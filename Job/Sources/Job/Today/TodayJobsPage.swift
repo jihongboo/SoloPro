@@ -20,25 +20,31 @@ public struct TodayJobsPage: View {
                 JobsSummaryView(jobs: todayJobs)
             }
 
-            Section("Today") {
-                if todayJobs.isEmpty {
+            if todayJobs.isEmpty {
+                Section("Today") {
                     ContentUnavailableView(
                         "No Jobs Today",
                         systemImage: "calendar.badge.plus",
                         description: Text("Add a job to start planning your workday.")
                     )
-                } else {
-                    ForEach(todayJobs) { job in
-                        NavigationLink(value: job) {
-                            JobRowView(job: job)
+                }
+            } else {
+                ForEach(todayJobStatuses) { status in
+                    Section(status.title) {
+                        ForEach(todayJobs(for: status)) { job in
+                            NavigationLink(value: job) {
+                                JobRowView(job: job)
+                            }
+                        }
+                        .onDelete { offsets in
+                            deleteJobs(at: offsets, status: status)
                         }
                     }
-                    .onDelete(perform: deleteJobs)
                 }
             }
         }
         .listStyle(.insetGrouped)
-        .navigationTitle("Today Jobs")
+        .navigationTitle("Today")
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 NavigationLink {
@@ -77,14 +83,40 @@ public struct TodayJobsPage: View {
     }
 }
 
+#Preview("Empty") {
+    NavigationStack {
+        TodayJobsPage()
+    }
+}
+
 private extension TodayJobsPage {
     private var todayJobs: [Job] {
-        jobs.filter { Calendar.current.isDateInToday($0.date) && $0.status != .canceled }
+        jobs.filter { Calendar.current.isDateInToday($0.date) }
     }
-    
-    private func deleteJobs(at offsets: IndexSet) {
+
+    private var todayJobStatuses: [JobStatus] {
+        todayDisplayOrder.filter { status in
+            todayJobs.contains { $0.status == status }
+        }
+    }
+
+    private var todayDisplayOrder: [JobStatus] {
+        [
+            .inProgress,
+            .scheduled,
+            .completed,
+            .canceled
+        ]
+    }
+
+    private func todayJobs(for status: JobStatus) -> [Job] {
+        todayJobs.filter { $0.status == status }
+    }
+
+    private func deleteJobs(at offsets: IndexSet, status: JobStatus) {
+        let sectionJobs = todayJobs(for: status)
         for index in offsets {
-            modelContext.delete(todayJobs[index])
+            modelContext.delete(sectionJobs[index])
         }
     }
 
@@ -95,3 +127,4 @@ private extension TodayJobsPage {
         didSeedSampleJobs = true
     }
 }
+

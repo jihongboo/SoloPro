@@ -60,17 +60,6 @@ public extension Job {
         customer: Customer.emma
     )
     
-    static let emergencyLeakRepair = Job(
-        title: "Emergency Leak Repair",
-        date: mockDate(hour: 20, minute: 15),
-        address: "14 River Court",
-        price: 325,
-        notes: "Same-day urgent request. Check under kitchen sink and upstairs bathroom before closing the job.",
-        status: .inProgress,
-        createdAt: mockDate(hour: 7, minute: 45),
-        customer: Customer.david
-    )
-    
     static let deckInspection = Job(
         title: "Deck Inspection",
         date: mockDate(daysFromToday: 2, hour: 8, minute: 30),
@@ -116,7 +105,6 @@ public extension Array where Element == Job {
         Job.exteriorPaintingEstimate,
         Job.gutterCleaning,
         Job.applianceInstall,
-        Job.emergencyLeakRepair,
         Job.deckInspection,
         Job.canceledWindowCleaning,
         Job.cabinetTouchUp
