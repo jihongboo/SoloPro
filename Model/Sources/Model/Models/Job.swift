@@ -14,6 +14,8 @@ public final class Job {
     public var title: String
     public var date: Date
     public var address: String
+    public var latitude: Double
+    public var longitude: Double
     public var price: Double
     public var notes: String?
     public var status: JobStatus
@@ -25,6 +27,8 @@ public final class Job {
         title: String,
         date: Date,
         address: String,
+        latitude: Double,
+        longitude: Double,
         price: Double = 0,
         notes: String? = nil,
         status: JobStatus = .scheduled,
@@ -35,6 +39,8 @@ public final class Job {
         self.title = title
         self.date = date
         self.address = address
+        self.latitude = latitude
+        self.longitude = longitude
         self.price = price
         self.notes = notes
         self.status = status

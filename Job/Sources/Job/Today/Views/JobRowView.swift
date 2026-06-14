@@ -32,7 +32,7 @@ struct JobRowView: View {
             Spacer(minLength: 8)
 
             VStack(alignment: .trailing, spacing: 8) {
-                Text(job.price.formatted(.currency(code: "USD")))
+                Text(job.price.formatted(.currency(code: Locale.current.currency?.identifier ?? "USD")))
                     .font(.subheadline.weight(.semibold))
                 StatusBadgeView(status: job.status)
             }

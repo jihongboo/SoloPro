@@ -17,24 +17,32 @@ public struct ContactsPage: View {
 
     public var body: some View {
         List {
-            Section(listSectionTitle) {
-                if filteredCustomers.isEmpty {
+            if filteredCustomers.isEmpty {
+                Section(listSectionTitle) {
                     ContentUnavailableView(
                         emptyStateTitle,
                         systemImage: "person.crop.circle.badge.questionmark",
                         description: Text(emptyStateDescription)
                     )
-                } else {
-                    ForEach(filteredCustomers) { customer in
-                        NavigationLink(value: customer) {
-                            CustomerSuggestionRow(customer: customer)
+                }
+            } else {
+                ForEach(customerSections) { section in
+                    Section(section.title) {
+                        ForEach(section.customers) { customer in
+                            NavigationLink(value: customer) {
+                                CustomerSuggestionRow(customer: customer)
+                            }
+                        }
+                        .onDelete { offsets in
+                            deleteCustomers(in: section, at: offsets)
                         }
                     }
-                    .onDelete(perform: deleteCustomers)
+                    .sectionIndexLabel(Text(section.indexLabel))
                 }
             }
         }
-        .listStyle(.insetGrouped)
+        .listStyle(.plain)
+        .listSectionIndexVisibility(.visible)
         .navigationTitle("Contacts")
         .searchable(text: $searchText, prompt: "Search Contacts")
         .toolbar {
@@ -77,6 +85,18 @@ private extension ContactsPage {
         }
     }
 
+    private var customerSections: [CustomerSection] {
+        let groupedCustomers = Dictionary(grouping: filteredCustomers, by: sectionTitle(for:))
+
+        return groupedCustomers
+            .map { CustomerSection(title: $0.key, customers: $0.value) }
+            .sorted { lhs, rhs in
+                if lhs.title == "#" { return false }
+                if rhs.title == "#" { return true }
+                return lhs.title.localizedStandardCompare(rhs.title) == .orderedAscending
+            }
+    }
+
     private var listSectionTitle: String {
         "\(filteredCustomers.count) Customers"
     }
@@ -91,9 +111,24 @@ private extension ContactsPage {
         "Try searching by name, phone, email, or address."
     }
 
-    private func deleteCustomers(at offsets: IndexSet) {
+    private func sectionTitle(for customer: Customer) -> String {
+        let trimmedName = customer.name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let firstCharacter = trimmedName.first else { return "#" }
+
+        return String(firstCharacter).uppercased()
+    }
+
+    private func deleteCustomers(in section: CustomerSection, at offsets: IndexSet) {
         for index in offsets {
-            modelContext.delete(filteredCustomers[index])
+            modelContext.delete(section.customers[index])
         }
     }
+}
+
+private struct CustomerSection: Identifiable {
+    let title: String
+    let customers: [Customer]
+
+    var id: String { title }
+    var indexLabel: String { title }
 }

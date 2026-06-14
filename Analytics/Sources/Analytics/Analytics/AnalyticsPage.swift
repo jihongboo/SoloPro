@@ -11,15 +11,6 @@ public struct AnalyticsPage: View {
 
     public var body: some View {
         List {
-            Section {
-                Picker("Time Dimension", selection: $selectedDimension) {
-                    ForEach(AnalyticsTimeDimension.allCases) { dimension in
-                        Text(dimension.title).tag(dimension)
-                    }
-                }
-                .pickerStyle(.segmented)
-            }
-
             if jobs.isEmpty {
                 ContentUnavailableView(
                     "No Analytics Yet",
@@ -65,6 +56,19 @@ public struct AnalyticsPage: View {
         }
         .listStyle(.insetGrouped)
         .navigationTitle("Analytics")
+        .toolbar {
+            Picker(
+                "Time Dimension",
+                systemImage: "calendar",
+                selection: $selectedDimension
+            ) {
+                ForEach(AnalyticsTimeDimension.allCases) { dimension in
+                    Text(dimension.title).tag(dimension)
+                }
+            }
+            .labelsHidden()
+            .fixedSize()
+        }
     }
 }
 

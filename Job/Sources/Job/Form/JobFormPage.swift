@@ -31,7 +31,10 @@ struct JobFormPage: View {
 
     private var canSave: Bool {
         !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
-        !customerName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        !customerName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+        !address.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+        latitude != nil &&
+        longitude != nil
     }
 
     var body: some View {
@@ -123,7 +126,8 @@ struct JobFormPage: View {
                 LocationSearchPage(
                     address: $address,
                     latitude: $latitude,
-                    longitude: $longitude
+                    longitude: $longitude,
+                    requiresCoordinate: true
                 )
             }
         }
@@ -164,8 +168,8 @@ private extension JobFormPage {
         selectedCustomer = job.customer
         date = job.date
         address = job.address
-        latitude = job.customer?.latitude
-        longitude = job.customer?.longitude
+        latitude = job.latitude
+        longitude = job.longitude
         priceText = job.price == 0 ? "" : String(format: "%.2f", job.price)
         notes = job.notes ?? ""
         status = job.status
@@ -212,6 +216,7 @@ private extension JobFormPage {
         let cleanAddress = address.trimmingCharacters(in: .whitespacesAndNewlines)
         let cleanNotes = notes.trimmingCharacters(in: .whitespacesAndNewlines)
         let price = Double(priceText.trimmingCharacters(in: .whitespacesAndNewlines)) ?? 0
+        guard let latitude, let longitude else { return }
         let customer = resolvedCustomer(named: cleanCustomerName, fallbackAddress: cleanAddress)
 
         switch mode {
@@ -220,6 +225,8 @@ private extension JobFormPage {
                 title: cleanTitle,
                 date: date,
                 address: cleanAddress,
+                latitude: latitude,
+                longitude: longitude,
                 price: price,
                 notes: cleanNotes.nilIfEmpty,
                 status: status,
@@ -230,6 +237,8 @@ private extension JobFormPage {
             job.title = cleanTitle
             job.date = date
             job.address = cleanAddress
+            job.latitude = latitude
+            job.longitude = longitude
             job.price = price
             job.notes = cleanNotes.nilIfEmpty
             job.status = status
@@ -271,6 +280,7 @@ private extension JobFormPage {
     private func existingCustomer(named name: String) -> Customer? {
         customers.first { $0.name.localizedCaseInsensitiveCompare(name) == .orderedSame }
     }
+    
 }
 
 private extension String {

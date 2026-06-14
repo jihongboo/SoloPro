@@ -72,7 +72,7 @@ struct NextJobView: View {
                 
                 if !address.isEmpty {
                     Button(action: openInAppleMaps) {
-                        Label("Navigate in Maps", systemImage: "map")
+                        Label("Navigate in Maps", systemImage: "location.fill")
                             .labelStyle(.iconOnly)
                             .frame(maxHeight: .infinity)
                     }

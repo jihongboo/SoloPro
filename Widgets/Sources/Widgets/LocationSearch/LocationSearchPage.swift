@@ -8,9 +8,11 @@ public struct LocationSearchPage: View {
     @Binding var address: String
     @Binding var latitude: Double?
     @Binding var longitude: Double?
+    let requiresCoordinate: Bool
 
     @State private var searchText = ""
     @State private var searchModel = LocationSearchModel()
+    @State private var isResolvingSearchText = false
     @FocusState private var isSearchFocused: Bool
 
     private var canConfirm: Bool {
@@ -22,10 +24,12 @@ public struct LocationSearchPage: View {
         address: Binding<String>,
         latitude: Binding<Double?>,
         longitude: Binding<Double?>,
+        requiresCoordinate: Bool = false
     ) {
         _address = address
         _latitude = latitude
         _longitude = longitude
+        self.requiresCoordinate = requiresCoordinate
     }
 
     public var body: some View {
@@ -76,9 +80,13 @@ public struct LocationSearchPage: View {
                     Button {
                         confirmSearchText()
                     } label: {
-                        Image(systemName: "checkmark")
+                        if isResolvingSearchText {
+                            ProgressView()
+                        } else {
+                            Image(systemName: "checkmark")
+                        }
                     }
-                    .disabled(!canConfirm)
+                    .disabled(!canConfirm || isResolvingSearchText)
                 }
             }
             .safeAreaInset(edge: .bottom) {
@@ -146,14 +154,18 @@ private extension LocationSearchPage {
         let search = MKLocalSearch(request: MKLocalSearch.Request(completion: completion.mapCompletion))
         search.start { response, _ in
             Task { @MainActor in
-                if let coordinate = response?.mapItems.first?.location.coordinate {
-                    latitude = coordinate.latitude
-                    longitude = coordinate.longitude
-                } else {
+                guard let coordinate = response?.mapItems.first?.location.coordinate else {
                     latitude = nil
                     longitude = nil
+                    searchModel.errorMessage = "No coordinates were found for this location. Try a more specific address."
+                    if !requiresCoordinate {
+                        dismiss()
+                    }
+                    return
                 }
 
+                latitude = coordinate.latitude
+                longitude = coordinate.longitude
                 dismiss()
             }
         }
@@ -161,13 +173,47 @@ private extension LocationSearchPage {
 
     private func confirmSearchText() {
         let cleanAddress = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
-        if !cleanAddress.isEmpty {
+        guard !cleanAddress.isEmpty else {
+            dismiss()
+            return
+        }
+
+        guard requiresCoordinate else {
             address = cleanAddress
             latitude = nil
             longitude = nil
+            dismiss()
+            return
         }
 
-        dismiss()
+        Task {
+            await resolveAndConfirm(cleanAddress)
+        }
+    }
+
+    @MainActor
+    private func resolveAndConfirm(_ cleanAddress: String) async {
+        isResolvingSearchText = true
+        defer { isResolvingSearchText = false }
+
+        guard let request = MKGeocodingRequest(addressString: cleanAddress) else {
+            searchModel.errorMessage = "Enter a more specific address."
+            return
+        }
+
+        do {
+            guard let coordinate = try await request.mapItems.first?.location.coordinate else {
+                searchModel.errorMessage = "No coordinates were found for this address. Try a more specific address."
+                return
+            }
+
+            address = cleanAddress
+            latitude = coordinate.latitude
+            longitude = coordinate.longitude
+            dismiss()
+        } catch {
+            searchModel.errorMessage = error.localizedDescription
+        }
     }
 }
 

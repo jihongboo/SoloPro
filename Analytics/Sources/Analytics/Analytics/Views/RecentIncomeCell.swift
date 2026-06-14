@@ -39,6 +39,8 @@ struct RecentIncomeCell: View {
                 title: "Kitchen Repair",
                 date: .now,
                 address: "123 Main Street",
+                latitude: 31.2356,
+                longitude: 121.4747,
                 price: 240,
                 status: .completed
             )

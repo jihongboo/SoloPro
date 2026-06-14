@@ -56,7 +56,7 @@ struct JobsSummaryView: View {
                 .foregroundStyle(.secondary)
         }
 
-        TodayDestinationsMapCard(jobs: jobs)
+        TodayDestinationsMapCard(jobs: jobs, routeDestinationJob: nextJob)
     }
 }
 

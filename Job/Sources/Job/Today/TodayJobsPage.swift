@@ -5,7 +5,6 @@ import Model
 public struct TodayJobsPage: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Job.date) private var jobs: [Job]
-    @AppStorage("didSeedSampleJobs") private var didSeedSampleJobs = false
 
     @State private var isPresentingJobForm = false
     @Namespace private var addJobTransition
@@ -70,9 +69,6 @@ public struct TodayJobsPage: View {
             JobFormPage(mode: .create)
                 .navigationTransition(.zoom(sourceID: addJobSourceID, in: addJobTransition))
         }
-        .task {
-            seedSampleJobsIfNeeded()
-        }
     }
 }
 
@@ -118,13 +114,6 @@ private extension TodayJobsPage {
         for index in offsets {
             modelContext.delete(sectionJobs[index])
         }
-    }
-
-    private func seedSampleJobsIfNeeded() {
-        guard !didSeedSampleJobs, jobs.isEmpty else { return }
-        [Job].mock.forEach(modelContext.insert)
-        [Customer].mock.forEach(modelContext.insert)
-        didSeedSampleJobs = true
     }
 }
 
