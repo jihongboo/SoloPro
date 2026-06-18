@@ -1,13 +1,13 @@
 import SwiftData
 import SwiftUI
 import Model
+import Widgets
 
 public struct JobsPage: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Job.date) private var jobs: [Job]
 
-    @State private var selectedDate = Date()
-    @State private var isDateFilterEnabled = false
+    @State private var selectedDate: Date?
     @State private var statusFilter: JobStatusFilter = .all
     @State private var searchText = ""
     @State private var isPresentingDatePicker = false
@@ -20,30 +20,38 @@ public struct JobsPage: View {
 
     public var body: some View {
         List {
-            if filteredJobs.isEmpty {
-                Section {
-                    ContentUnavailableView(
-                        "No Jobs Found",
-                        systemImage: "calendar",
-                        description: Text(emptyStateDescription)
-                    )
-                }
-            } else {
-                ForEach(jobDateSections) { dateSection in
-                    Section(dateSection.title) {
-                        ForEach(dateSection.jobs) { job in
-                            NavigationLink(value: job) {
-                                JobRowView(job: job)
-                            }
+            ForEach(jobDateSections) { dateSection in
+                Section(dateSection.title) {
+                    ForEach(dateSection.jobs) { job in
+                        NavigationLink(value: job) {
+                            JobRowView(job: job)
                         }
-                        .onDelete { offsets in
-                            deleteJobs(at: offsets, in: dateSection)
-                        }
+                    }
+                    .onDelete { offsets in
+                        deleteJobs(at: offsets, in: dateSection)
                     }
                 }
             }
         }
         .listStyle(.plain)
+        .overlay {
+            if filteredJobs.isEmpty {
+                ContentUnavailableView {
+                    Label("No Jobs Found", systemImage: "square.stack")
+                } description: {
+                    Text(emptyStateDescription)
+                } actions: {
+                    Button {
+                        isPresentingJobForm = true
+                    } label: {
+                        Label("Add Job", systemImage: "plus")
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+                }
+                .background(.background)
+            }
+        }
         .navigationTitle("All Jobs")
         .searchable(text: $searchText, prompt: "Search jobs")
         .toolbar {
@@ -62,9 +70,9 @@ public struct JobsPage: View {
                         isPresentingDatePicker = true
                     }
 
-                    if isDateFilterEnabled {
+                    if selectedDate != nil {
                         Button("Clear Date Filter", systemImage: "calendar.badge.minus") {
-                            isDateFilterEnabled = false
+                            selectedDate = nil
                         }
                     }
 
@@ -80,42 +88,8 @@ public struct JobsPage: View {
             }
         }
         .sheet(isPresented: $isPresentingDatePicker) {
-            NavigationStack {
-                List {
-                    Section {
-                        DatePicker(
-                            "Date",
-                            selection: $selectedDate,
-                            displayedComponents: .date
-                        )
-                        .datePickerStyle(.graphical)
-                    }
-
-                    Section {
-                        Button("Show All Dates") {
-                            isDateFilterEnabled = false
-                            isPresentingDatePicker = false
-                        }
-                    }
-                }
-                .navigationTitle("Select Date")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .confirmationAction) {
-                        Button("Done") {
-                            isDateFilterEnabled = true
-                            isPresentingDatePicker = false
-                        }
-                    }
-
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button("Cancel") {
-                            isPresentingDatePicker = false
-                        }
-                    }
-                }
-            }
-            .presentationDetents([.medium, .large])
+            DatePickerPage(selectedDate: $selectedDate)
+                .presentationDetents([.medium, .large])
         }
         .sheet(isPresented: $isPresentingJobForm) {
             JobFormPage(mode: .create)
@@ -128,6 +102,12 @@ public struct JobsPage: View {
     NavigationStack {
         JobsPage()
             .modelContainer(.mock)
+    }
+}
+
+#Preview("Empty") {
+    NavigationStack {
+        JobsPage()
     }
 }
 
@@ -153,16 +133,13 @@ private extension JobsPage {
         }
     }
 
-    private var selectedDateInterval: DateInterval {
-        Calendar.current.dateInterval(of: .day, for: selectedDate) ?? fallbackDateInterval
-    }
-
-    private var fallbackDateInterval: DateInterval {
-        DateInterval(start: selectedDate, duration: 24 * 60 * 60)
+    private var selectedDateInterval: DateInterval? {
+        guard let selectedDate else { return nil }
+        return Calendar.current.dateInterval(of: .day, for: selectedDate) ?? fallbackDateInterval(for: selectedDate)
     }
 
     private var dateFilterTitle: String {
-        guard isDateFilterEnabled else { return "All Dates" }
+        guard let selectedDate else { return "All Dates" }
         return selectedDate.formatted(.dateTime.month(.abbreviated).day().year())
     }
 
@@ -175,8 +152,12 @@ private extension JobsPage {
     }
 
     private func dateFilterIncludes(_ date: Date) -> Bool {
-        guard isDateFilterEnabled else { return true }
+        guard let selectedDateInterval else { return true }
         return selectedDateInterval.contains(date)
+    }
+
+    private func fallbackDateInterval(for date: Date) -> DateInterval {
+        DateInterval(start: date, duration: 24 * 60 * 60)
     }
 
     private func deleteJobs(at offsets: IndexSet, in dateSection: JobDateSection) {

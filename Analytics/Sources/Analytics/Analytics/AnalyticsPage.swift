@@ -11,56 +11,58 @@ public struct AnalyticsPage: View {
 
     public var body: some View {
         List {
+            Section(selectedDimension.summaryTitle) {
+                AnalyticsSummaryView(
+                    timeDimension: selectedDimension,
+                    income: selectedIncome,
+                    completedJobCount: selectedCompletedJobs.count,
+                    upcomingJobCount: selectedUpcomingJobs.count,
+                    averagePrice: selectedAveragePrice
+                )
+            }
+
+            Section("Income Trend") {
+                IncomeTrendView(
+                    performanceData: performanceData,
+                    timeDimension: selectedDimension
+                )
+            }
+
+            Section("Work Volume") {
+                WorkVolumeView(
+                    performanceData: performanceData,
+                    timeDimension: selectedDimension
+                )
+            }
+
+            Section {
+                StatusAnalyticsStorageView(
+                    items: statusBreakdown,
+                    total: selectedJobs.count
+                )
+            } header: {
+                HStack {
+                    Text("Status usage")
+                    Spacer()
+                    Text("\(selectedJobs.count) jobs")
+                }
+            }
+
+            Section("Recent Income") {
+                RecentIncomeView(jobs: recentCompletedJobs)
+            }
+        }
+        .listStyle(.insetGrouped)
+        .overlay {
             if jobs.isEmpty {
                 ContentUnavailableView(
                     "No Analytics Yet",
                     systemImage: "chart.line.uptrend.xyaxis",
                     description: Text("Complete jobs to start seeing work and income trends.")
                 )
-            } else {
-                Section(selectedDimension.summaryTitle) {
-                    AnalyticsSummaryView(
-                        timeDimension: selectedDimension,
-                        income: selectedIncome,
-                        completedJobCount: selectedCompletedJobs.count,
-                        upcomingJobCount: selectedUpcomingJobs.count,
-                        averagePrice: selectedAveragePrice
-                    )
-                }
-
-                Section("Income Trend") {
-                    IncomeTrendView(
-                        performanceData: performanceData,
-                        timeDimension: selectedDimension
-                    )
-                }
-
-                Section("Work Volume") {
-                    WorkVolumeView(
-                        performanceData: performanceData,
-                        timeDimension: selectedDimension
-                    )
-                }
-
-                Section {
-                    StatusAnalyticsStorageView(
-                        items: statusBreakdown,
-                        total: selectedJobs.count
-                    )
-                } header: {
-                    HStack {
-                        Text("Status usage")
-                        Spacer()
-                        Text("\(selectedJobs.count) jobs")
-                    }
-                }
-
-                Section("Recent Income") {
-                    RecentIncomeView(jobs: recentCompletedJobs)
-                }
+                .background(.background)
             }
         }
-        .listStyle(.insetGrouped)
         .navigationTitle("Analytics")
         .toolbar {
             Picker(
@@ -83,6 +85,12 @@ public struct AnalyticsPage: View {
         AnalyticsPage()
     }
     .modelContainer(.mock)
+}
+
+#Preview("Empty") {
+    NavigationStack {
+        AnalyticsPage()
+    }
 }
 
 private extension AnalyticsPage {

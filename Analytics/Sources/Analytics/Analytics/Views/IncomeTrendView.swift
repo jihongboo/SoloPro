@@ -32,7 +32,7 @@ struct IncomeTrendView: View {
                     "No Completed Income",
                     systemImage: "chart.bar.xaxis",
                 )
-                .background(.white)
+                .background(.background)
             }
         }
     }

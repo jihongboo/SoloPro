@@ -6,43 +6,43 @@
 //
 
 import SwiftUI
+import SwiftData
+
 import Model
 
 public struct CustomerSelectionSheet: View {
+    @Binding public var selectedCustomer: Customer?
+
+    @Query(sort: \Customer.name) private var customers: [Customer]
     @Environment(\.dismiss) private var dismiss
-
-    let customers: [Customer]
-    @Binding var selectedCustomer: Customer?
-
     @State private var searchText = ""
     
     public init(
-        customers: [Customer],
         selectedCustomer: Binding<Customer?>,
     ) {
-        self.customers = customers
         _selectedCustomer = selectedCustomer
     }
 
     public var body: some View {
         NavigationStack {
             List {
+                ForEach(filteredCustomers) { customer in
+                    Button {
+                        selectedCustomer = customer
+                        dismiss()
+                    } label: {
+                        CustomerSuggestionRow(customer: customer)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .overlay {
                 if filteredCustomers.isEmpty {
                     ContentUnavailableView(
                         "No Customers Found",
                         systemImage: "person.crop.circle.badge.questionmark",
                         description: Text("Try searching by name, phone, email, or address.")
                     )
-                } else {
-                    ForEach(filteredCustomers) { customer in
-                        Button {
-                            selectedCustomer = customer
-                            dismiss()
-                        } label: {
-                            CustomerSuggestionRow(customer: customer)
-                        }
-                        .buttonStyle(.plain)
-                    }
                 }
             }
             .navigationTitle("Choose Customer")
@@ -74,7 +74,14 @@ public struct CustomerSelectionSheet: View {
 #Preview {
     @Previewable @State var selectedCustomer: Customer? = nil
     CustomerSelectionSheet(
-        customers: .mock,
+        selectedCustomer: $selectedCustomer
+    )
+    .modelContainer(.mock)
+}
+
+#Preview("Empty") {
+    @Previewable @State var selectedCustomer: Customer? = nil
+    CustomerSelectionSheet(
         selectedCustomer: $selectedCustomer
     )
 }

@@ -17,32 +17,41 @@ public struct ContactsPage: View {
 
     public var body: some View {
         List {
-            if filteredCustomers.isEmpty {
-                Section(listSectionTitle) {
-                    ContentUnavailableView(
-                        emptyStateTitle,
-                        systemImage: "person.crop.circle.badge.questionmark",
-                        description: Text(emptyStateDescription)
-                    )
-                }
-            } else {
-                ForEach(customerSections) { section in
-                    Section(section.title) {
-                        ForEach(section.customers) { customer in
-                            NavigationLink(value: customer) {
-                                CustomerSuggestionRow(customer: customer)
-                            }
-                        }
-                        .onDelete { offsets in
-                            deleteCustomers(in: section, at: offsets)
+            ForEach(customerSections) { section in
+                Section(section.title) {
+                    ForEach(section.customers) { customer in
+                        NavigationLink(value: customer) {
+                            CustomerSuggestionRow(customer: customer)
                         }
                     }
-                    .sectionIndexLabel(Text(section.indexLabel))
+                    .onDelete { offsets in
+                        deleteCustomers(in: section, at: offsets)
+                    }
                 }
+                .sectionIndexLabel(Text(section.indexLabel))
             }
         }
         .listStyle(.plain)
         .listSectionIndexVisibility(.visible)
+        .overlay {
+            if filteredCustomers.isEmpty {
+                ContentUnavailableView {
+                    Label(emptyStateTitle, systemImage: "person.crop.circle.badge.questionmark")
+                } description: {
+                    Text(emptyStateDescription)
+                } actions: {
+                    if searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        Button {
+                            isPresentingCustomerForm = true
+                        } label: {
+                            Label("Add Contact", systemImage: "plus")
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+                    }
+                }
+            }
+        }
         .navigationTitle("Contacts")
         .searchable(text: $searchText, prompt: "Search Contacts")
         .toolbar {
@@ -70,6 +79,12 @@ public struct ContactsPage: View {
         ContactsPage()
     }
     .modelContainer(.mock)
+}
+
+#Preview("Empty") {
+    NavigationStack {
+        ContactsPage()
+    }
 }
 
 private extension ContactsPage {

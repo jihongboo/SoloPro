@@ -38,7 +38,7 @@ struct MainPage: View {
                 }
             }
         }
-        .task(seedSampleJobsIfNeeded)
+//        .task(seedSampleJobsIfNeeded)
     }
 }
 
@@ -49,9 +49,11 @@ struct MainPage: View {
 
 private extension MainPage {
     func seedSampleJobsIfNeeded() {
+        #if DEBUG
         guard !isPreview, !didSeedSampleJobs else { return }
         [Job].mock.forEach(modelContext.insert)
         [Customer].mock.forEach(modelContext.insert)
         didSeedSampleJobs = true
+        #endif
     }
 }

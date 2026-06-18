@@ -63,12 +63,13 @@ struct JobFormPage: View {
                     }
                 )
 
-                JobLocationSectionView(
-                    address: address,
-                    onSelectLocation: {
-                        isPresentingLocationSearch = true
-                    }
-                )
+                Section("Location") {
+                    JobLocationSectionView(
+                        address: $address,
+                        latitude: $latitude,
+                        longitude: $longitude
+                    )
+                }
 
                 Section("Payment") {
                     TextField("Price", text: $priceText)
@@ -108,7 +109,6 @@ struct JobFormPage: View {
             }
             .sheet(isPresented: $isPresentingCustomerList) {
                 CustomerSelectionSheet(
-                    customers: customers,
                     selectedCustomer: Binding(
                         get: { selectedCustomer },
                         set: { newCustomer in
@@ -120,14 +120,6 @@ struct JobFormPage: View {
                             selectCustomer(newCustomer)
                         }
                     )
-                )
-            }
-            .sheet(isPresented: $isPresentingLocationSearch) {
-                LocationSearchPage(
-                    address: $address,
-                    latitude: $latitude,
-                    longitude: $longitude,
-                    requiresCoordinate: true
                 )
             }
         }
