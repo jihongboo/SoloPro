@@ -19,8 +19,6 @@ struct StatusAnalyticsStorageView: View {
     let items: [StatusAnalyticsItem]
     let total: Int
     
-    @State private var animationProgress = 0.0
-    
     private var visibleItems: [StatusAnalyticsItem] {
         items.filter { $0.count > 0 }
     }
@@ -34,16 +32,15 @@ struct StatusAnalyticsStorageView: View {
                 Spacer()
                 
                 HStack {
-                    Text(CGFloat(total) * animationProgress, format: .number)
+                    Text(total, format: .number)
                         .font(.headline)
-                        .contentTransition(.numericText())
                     Text(total == 1 ? "job" : "jobs")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
             }
             
-            StatusStorageBar(items: visibleItems, total: total, animationProgress: animationProgress)
+            StatusStorageBar(items: visibleItems, total: total)
                 .frame(height: 18)
                 .accessibilityLabel("Job status distribution")
             
@@ -51,24 +48,12 @@ struct StatusAnalyticsStorageView: View {
                 ForEach(items) { item in
                     StatusStorageLegendRow(
                         item: item,
-                        total: total,
-                        animationProgress: animationProgress
+                        total: total
                     )
                 }
             }
         }
         .padding(.vertical, 4)
-        .onAppear(perform: animateBar)
-        .onChange(of: items, animateBar)
-        .onChange(of: total, animateBar)
-    }
-    
-    private func animateBar() {
-        animationProgress = 0
-        
-        withAnimation(.smooth) {
-            animationProgress = 1
-        }
     }
 }
 
@@ -89,7 +74,6 @@ struct StatusAnalyticsStorageView: View {
 private struct StatusStorageBar: View {
     let items: [StatusAnalyticsItem]
     let total: Int
-    let animationProgress: Double
     
     private let spacing = 2.0
     
@@ -118,7 +102,7 @@ private struct StatusStorageBar: View {
         let spacingWidth = spacing * Double(max(items.count - 1, 0))
         let availableWidth = max(containerWidth - spacingWidth, 0)
         let percentage = Double(item.count) / Double(total)
-        return availableWidth * percentage * animationProgress
+        return availableWidth * percentage
     }
 }
 
@@ -134,7 +118,11 @@ private struct CapsuleSegment: View {
 private struct StatusStorageLegendRow: View {
     let item: StatusAnalyticsItem
     let total: Int
-    let animationProgress: Double
+    
+    private var percentage: Double {
+        guard total > 0 else { return 0 }
+        return Double(item.count) / Double(total)
+    }
     
     var body: some View {
         HStack {
@@ -148,17 +136,15 @@ private struct StatusStorageLegendRow: View {
             Spacer()
             
             Text(
-                Double(item.count) / Double(total) * animationProgress,
+                percentage,
                 format: .percent.precision(.fractionLength(0))
             )
             .font(.subheadline)
-            .contentTransition(.numericText())
             .foregroundStyle(.secondary)
             
-            Text(CGFloat(item.count) * animationProgress, format: .number)
+            Text(item.count, format: .number)
                 .font(.subheadline.weight(.semibold))
                 .monospacedDigit()
-                .contentTransition(.numericText())
                 .frame(minWidth: 28, alignment: .trailing)
         }
     }

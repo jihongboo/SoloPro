@@ -7,31 +7,8 @@
 
 import WidgetKit
 import SwiftUI
+import SwiftData
 import Model
-
-struct TodayEntry: TimelineEntry {
-    let date: Date
-    let jobs: [Job]
-}
-
-struct TodayProvider: TimelineProvider {
-    typealias Entry = TodayEntry
-
-    func placeholder(in context: Context) -> TodayEntry {
-        TodayEntry(date: Date(), jobs: .mock)
-    }
-
-    func getSnapshot(in context: Context, completion: @escaping (TodayEntry) -> ()) {
-        let entry = TodayEntry(date: Date(), jobs: .mock)
-        completion(entry)
-    }
-
-    func getTimeline(in context: Context, completion: @escaping (Timeline<TodayEntry>) -> ()) {
-        let entry = TodayEntry(date: Date(), jobs: .mock)
-        let timeline = Timeline(entries: [entry], policy: .atEnd)
-        completion(timeline)
-    }
-}
 
 struct TodayWidgetView: View {
     var entry: TodayEntry
@@ -53,16 +30,16 @@ struct TodayWidgetView: View {
                 }
             }
             
-            VStack {
-                ForEach(entry.jobs.prefix(4), id: \.id) { job in
-                    HStack {
+            VStack(spacing: 4) {
+                ForEach(entry.jobs.prefix(4)) { job in
+                    HStack(alignment: .firstTextBaseline) {
                         Text(job.date, style: .time)
                             .font(.body.bold())
                             .monospacedDigit()
                         
                         Spacer()
-                                                
-                        Text(job.customer?.name ?? "Unknown")
+                        
+                        Text(job.title)
                             .font(.callout)
                             .lineLimit(1)
                     }
@@ -70,6 +47,21 @@ struct TodayWidgetView: View {
                 Spacer(minLength: 0)
             }
             .frame(maxHeight: .infinity)
+            .overlay {
+                if entry.jobs.isEmpty {
+                    VStack(spacing: 8) {
+                        Spacer()
+                        Image(systemName: "calendar.badge.clock")
+                            .font(.largeTitle)
+                            .foregroundColor(.secondary)
+                        Text("No jobs for today")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
+            }
         }
     }
 }
@@ -91,7 +83,7 @@ struct TodayWidget: Widget {
 #Preview("Small", as: .systemSmall) {
     TodayWidget()
 } timeline: {
-    TodayEntry(date: .now, jobs: .mock)
+    TodayEntry(date: .now, jobs: .preview)
 }
 
 #Preview("Small Empty", as: .systemSmall) {
@@ -103,17 +95,12 @@ struct TodayWidget: Widget {
 #Preview("Medium", as: .systemMedium) {
     TodayWidget()
 } timeline: {
-    TodayEntry(date: .now, jobs: .mock)
+    TodayEntry(date: .now, jobs: .preview)
 }
 
-#Preview("Large", as: .systemLarge) {
+#Preview("Medium Empty", as: .systemMedium) {
     TodayWidget()
 } timeline: {
-    TodayEntry(date: .now, jobs: .mock)
+    TodayEntry(date: .now, jobs: [])
 }
 
-//#Preview("ExtraLarge", as: .systemExtraLarge) {
-//    TodayWidget()
-//} timeline: {
-//    TodayEntry(date: .now, jobs: .mock)
-//}

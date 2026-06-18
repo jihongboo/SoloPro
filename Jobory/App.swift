@@ -8,7 +8,7 @@ struct SoloProApp: App {
         WindowGroup {
             MainPage()
         }
-        .modelContainer(for: [Customer.self, Job.self])
+        .modelContainer(.shared)
     }
 }
 

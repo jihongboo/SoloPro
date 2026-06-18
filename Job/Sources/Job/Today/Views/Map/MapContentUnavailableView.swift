@@ -17,7 +17,6 @@ struct MapContentUnavailableView: View {
             ContentUnavailableView(
                 "No Active Destinations",
                 systemImage: "map",
-                description: Text("Unfinished jobs with addresses will appear on the map.")
             )
             .background(.background)
         } else if !mapModel.hasLocationAuthorization {

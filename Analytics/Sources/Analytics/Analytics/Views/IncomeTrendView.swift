@@ -12,8 +12,6 @@ struct IncomeTrendView: View {
     let performanceData: [AnalyticsPerformanceItem]
     let timeDimension: AnalyticsTimeDimension
 
-    @State private var animationProgress = 0.0
-
     var body: some View {
         Group {
             if performanceData.allSatisfy({ $0.income == 0 }) {
@@ -26,7 +24,7 @@ struct IncomeTrendView: View {
                 Chart(performanceData) { item in
                     BarMark(
                         x: .value(timeDimension.axisLabel, item.startDate, unit: timeDimension.chartUnit),
-                        y: .value("Income", item.income * animationProgress)
+                        y: .value("Income", item.income)
                     )
                     .foregroundStyle(.green.gradient)
                     .cornerRadius(4)
@@ -37,17 +35,6 @@ struct IncomeTrendView: View {
                 .frame(height: 180)
                 .accessibilityLabel("Income chart")
             }
-        }
-        .onAppear(perform: animateChart)
-        .onChange(of: performanceData, animateChart)
-        .onChange(of: timeDimension, animateChart)
-    }
-
-    private func animateChart() {
-        animationProgress = 0
-
-        withAnimation(.smooth) {
-            animationProgress = 1
         }
     }
 }

@@ -12,48 +12,33 @@ struct WorkVolumeView: View {
     let performanceData: [AnalyticsPerformanceItem]
     let timeDimension: AnalyticsTimeDimension
 
-    @State private var animationProgress = 0.0
-
     var body: some View {
-        Group {
+        Chart(performanceData) { item in
+            LineMark(
+                x: .value(timeDimension.axisLabel, item.startDate, unit: timeDimension.chartUnit),
+                y: .value("Jobs", item.jobCount)
+            )
+            .foregroundStyle(.blue)
+            .symbol(Circle())
+
+            AreaMark(
+                x: .value(timeDimension.axisLabel, item.startDate, unit: timeDimension.chartUnit),
+                y: .value("Jobs", item.jobCount)
+            )
+            .foregroundStyle(.blue.opacity(0.16))
+        }
+        .chartYAxis {
+            AxisMarks(position: .leading)
+        }
+        .frame(height: 160)
+        .accessibilityLabel("Completed jobs chart")
+        .overlay {
             if performanceData.allSatisfy({ $0.jobCount == 0 }) {
                 ContentUnavailableView(
                     "No Completed Jobs",
                     systemImage: "chart.line.uptrend.xyaxis",
-                    description: Text("Completed jobs will appear in this chart.")
                 )
-            } else {
-                Chart(performanceData) { item in
-                    LineMark(
-                        x: .value(timeDimension.axisLabel, item.startDate, unit: timeDimension.chartUnit),
-                        y: .value("Jobs", Double(item.jobCount) * animationProgress)
-                    )
-                    .foregroundStyle(.blue)
-                    .symbol(Circle())
-
-                    AreaMark(
-                        x: .value(timeDimension.axisLabel, item.startDate, unit: timeDimension.chartUnit),
-                        y: .value("Jobs", Double(item.jobCount) * animationProgress)
-                    )
-                    .foregroundStyle(.blue.opacity(0.16))
-                }
-                .chartYAxis {
-                    AxisMarks(position: .leading)
-                }
-                .frame(height: 160)
-                .accessibilityLabel("Completed jobs chart")
             }
-        }
-        .onAppear(perform: animateChart)
-        .onChange(of: performanceData, animateChart)
-        .onChange(of: timeDimension, animateChart)
-    }
-
-    private func animateChart() {
-        animationProgress = 0
-
-        withAnimation(.smooth) {
-            animationProgress = 1
         }
     }
 }

@@ -53,7 +53,7 @@ struct TodayDestinationsMapCard: View {
                 MapContentUnavailableView(mapModel: mapModel)
             }
         }
-        .frame(height: 220)
+        .frame(height: 260)
         .clipShape(.containerRelative)
         .task(id: requestSignature, loadDestinations)
         .task(mapModel.configureLocationAuthorizationTracking)
