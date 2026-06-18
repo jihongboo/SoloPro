@@ -18,7 +18,7 @@ public struct AnalyticsPage: View {
                     description: Text("Complete jobs to start seeing work and income trends.")
                 )
             } else {
-                Section {
+                Section(selectedDimension.summaryTitle) {
                     AnalyticsSummaryView(
                         timeDimension: selectedDimension,
                         income: selectedIncome,
@@ -42,11 +42,17 @@ public struct AnalyticsPage: View {
                     )
                 }
 
-                Section("Status") {
+                Section {
                     StatusAnalyticsStorageView(
                         items: statusBreakdown,
                         total: selectedJobs.count
                     )
+                } header: {
+                    HStack {
+                        Text("Status usage")
+                        Spacer()
+                        Text("\(selectedJobs.count) jobs")
+                    }
                 }
 
                 Section("Recent Income") {

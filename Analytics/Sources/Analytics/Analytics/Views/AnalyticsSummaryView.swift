@@ -16,9 +16,6 @@ struct AnalyticsSummaryView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
-            Text(timeDimension.summaryTitle)
-                .font(.headline)
-
             HStack(spacing: 12) {
                 AnalyticsMetricView(
                     title: "Income",

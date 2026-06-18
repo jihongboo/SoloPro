@@ -75,7 +75,8 @@ enum ContactTag: String, CaseIterable, Identifiable {
 
     static func tags(for customer: Customer) -> [ContactTag] {
         var tags: [ContactTag] = []
-        let completedJobs = customer.jobs.filter { $0.status == .completed }
+        let jobs = customer.jobs ?? []
+        let completedJobs = jobs.filter { $0.status == .completed }
         let lifetimeValue = completedJobs.reduce(0) { $0 + $1.price }
         let notes = customer.notes ?? ""
 

@@ -49,7 +49,7 @@ public struct TodayJobsPage: View {
                 NavigationLink {
                     JobsPage()
                 } label: {
-                    Label("All Jobs", systemImage: "calendar")
+                    Label("All Jobs", systemImage: "square.stack")
                 }
             }
 

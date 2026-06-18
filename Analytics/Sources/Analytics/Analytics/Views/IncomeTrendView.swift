@@ -13,27 +13,26 @@ struct IncomeTrendView: View {
     let timeDimension: AnalyticsTimeDimension
 
     var body: some View {
-        Group {
+        Chart(performanceData) { item in
+            BarMark(
+                x: .value(timeDimension.axisLabel, item.startDate, unit: timeDimension.chartUnit),
+                y: .value("Income", item.income)
+            )
+            .foregroundStyle(.green.gradient)
+            .cornerRadius(4)
+        }
+        .chartYAxis {
+            AxisMarks(position: .leading)
+        }
+        .frame(height: 160)
+        .accessibilityLabel("Income chart")
+        .overlay {
             if performanceData.allSatisfy({ $0.income == 0 }) {
                 ContentUnavailableView(
                     "No Completed Income",
                     systemImage: "chart.bar.xaxis",
-                    description: Text("Completed jobs will appear in this chart.")
                 )
-            } else {
-                Chart(performanceData) { item in
-                    BarMark(
-                        x: .value(timeDimension.axisLabel, item.startDate, unit: timeDimension.chartUnit),
-                        y: .value("Income", item.income)
-                    )
-                    .foregroundStyle(.green.gradient)
-                    .cornerRadius(4)
-                }
-                .chartYAxis {
-                    AxisMarks(position: .leading)
-                }
-                .frame(height: 180)
-                .accessibilityLabel("Income chart")
+                .background(.white)
             }
         }
     }

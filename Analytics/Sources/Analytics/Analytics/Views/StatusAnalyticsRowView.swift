@@ -25,21 +25,6 @@ struct StatusAnalyticsStorageView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
-            HStack(alignment: .firstTextBaseline) {
-                Text("Status Usage")
-                    .font(.headline)
-                
-                Spacer()
-                
-                HStack {
-                    Text(total, format: .number)
-                        .font(.headline)
-                    Text(total == 1 ? "job" : "jobs")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                }
-            }
-            
             StatusStorageBar(items: visibleItems, total: total)
                 .frame(height: 18)
                 .accessibilityLabel("Job status distribution")

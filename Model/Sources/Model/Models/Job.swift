@@ -10,16 +10,16 @@ import SwiftData
 
 @Model
 public final class Job {
-    public var id: UUID
-    public var title: String
-    public var date: Date
-    public var address: String
-    public var latitude: Double
-    public var longitude: Double
-    public var price: Double
+    public var id: UUID = UUID()
+    public var title: String = ""
+    public var date: Date = Date()
+    public var address: String = ""
+    public var latitude: Double = 0
+    public var longitude: Double = 0
+    public var price: Double = 0
     public var notes: String?
-    public var status: JobStatus
-    public var createdAt: Date
+    public var status: JobStatus = JobStatus.scheduled
+    public var createdAt: Date = Date()
     public var customer: Customer?
 
     public init(

@@ -10,18 +10,18 @@ import SwiftData
 
 @Model
 public final class Customer {
-    public var id: UUID
-    public var name: String
+    public var id: UUID = UUID()
+    public var name: String = ""
     public var phone: String?
     public var email: String?
     public var address: String?
     public var latitude: Double?
     public var longitude: Double?
     public var notes: String?
-    public var createdAt: Date
+    public var createdAt: Date = Date()
 
     @Relationship(deleteRule: .cascade, inverse: \Job.customer)
-    public var jobs: [Job]
+    public var jobs: [Job]?
 
     public init(
         id: UUID = UUID(),

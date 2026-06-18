@@ -108,12 +108,16 @@ struct ContactPage: View {
 }
 
 private extension ContactPage {
+    private var customerJobs: [Job] {
+        customer.jobs ?? []
+    }
+
     private var sortedJobs: [Job] {
-        customer.jobs.sorted { $0.date > $1.date }
+        customerJobs.sorted { $0.date > $1.date }
     }
 
     private var completedJobs: [Job] {
-        customer.jobs.filter { $0.status == .completed }
+        customerJobs.filter { $0.status == .completed }
     }
 
     private var lifetimeValue: Double {
