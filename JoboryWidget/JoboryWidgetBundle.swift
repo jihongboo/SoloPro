@@ -13,7 +13,7 @@ struct JoboryWidgetBundle: WidgetBundle {
     var body: some Widget {
         TodayWidget()
         FocusedJobWidget()
-        JoboryWidgetControl()
-        JoboryWidgetLiveActivity()
+//        JoboryWidgetControl()
+//        JoboryWidgetLiveActivity()
     }
 }

@@ -40,7 +40,7 @@ struct TodayProvider: TimelineProvider {
 private extension TodayProvider {
     func loadTodayJobs(at date: Date = Date()) -> [TodayJobSnapshot] {
         do {
-            let container = try ModelContainer.makeShared()
+            let container = ModelContainer.shared
             let context = ModelContext(container)
             let calendar = Calendar.current
             let startOfDay = calendar.startOfDay(for: date)
@@ -62,7 +62,7 @@ private extension TodayProvider {
 
     func loadFocusedJob(at date: Date = Date()) -> TodayJobSnapshot? {
         do {
-            let container = try ModelContainer.makeShared()
+            let container = ModelContainer.shared
             let context = ModelContext(container)
             let descriptor = FetchDescriptor<Job>(
                 sortBy: [SortDescriptor(\Job.date)]
