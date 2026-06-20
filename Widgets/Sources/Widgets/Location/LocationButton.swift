@@ -1,20 +1,14 @@
 import SwiftUI
 
+import Model
+
 public struct LocationButton: View {
-    @Binding var address: String
-    @Binding var latitude: Double?
-    @Binding var longitude: Double?
+    @Binding var location: Location?
 
     @State private var isPresented = false
     
-    public init(
-        address: Binding<String>,
-        latitude: Binding<Double?>,
-        longitude: Binding<Double?>,
-    ) {
-        _address = address
-        _latitude = latitude
-        _longitude = longitude
+    public init(location: Binding<Location?>) {
+        _location = location
     }
 
     public var body: some View {
@@ -24,9 +18,9 @@ public struct LocationButton: View {
             HStack {
                 Label {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(address.isEmpty ? "Add Location" : "Location")
+                        Text(location?.address == nil ? "Add Location" : "Location")
 
-                        if !address.isEmpty {
+                        if let address = location?.address {
                             Text(address)
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
@@ -46,25 +40,15 @@ public struct LocationButton: View {
         }
         .foregroundStyle(.primary)
         .sheet(isPresented: $isPresented) {
-            LocationSearchPage(
-                address: $address,
-                latitude: $latitude,
-                longitude: $longitude,
-                requiresCoordinate: true
-            )
+            LocationSearchPage(location: $location)
         }
     }
 }
 
 #Preview {
-    @Previewable @State var address: String = ""
-    @Previewable @State var latitude: Double?
-    @Previewable @State var longitude: Double?
+    @Previewable @State var location: Location?
+    
     List {
-        LocationButton(
-            address: $address,
-            latitude: $latitude,
-            longitude: $longitude
-        )
+        LocationButton(location: $location)
     }
 }

@@ -1,8 +1,8 @@
-import CoreLocation
-import Foundation
-import MapKit
 import SwiftUI
+import MapKit
+
 import Model
+import AppFoundation
 
 struct TodayDestinationsMapCard: View {
     let jobs: [Job]
@@ -13,7 +13,7 @@ struct TodayDestinationsMapCard: View {
     var body: some View {
         MapReader { proxy in
             Map {
-                if let currentRoute = mapModel.currentRoute {
+                if let currentRoute = mapModel.route {
                     MapPolyline(currentRoute)
                         .stroke(mapModel.routeTint, lineWidth: 4)
                 }
@@ -56,13 +56,20 @@ struct TodayDestinationsMapCard: View {
         .frame(height: 260)
         .clipShape(.containerRelative)
         .task(id: requestSignature, loadDestinations)
-        .task(mapModel.configureLocationAuthorizationTracking)
+        .task(mapModel.requestLocationIfAuthorized)
+        .onChange(of: mapModel.coordinate) {
+            Task {
+                await mapModel.handleCoordinateChange()
+            }
+        }
     }
 
 }
 
 #Preview {
-    TodayDestinationsMapCard(jobs: .mock, routeDestinationJob: .mock)
+    List {
+        TodayDestinationsMapCard(jobs: .mock, routeDestinationJob: .mock)
+    }
 }
 
 private extension TodayDestinationsMapCard {

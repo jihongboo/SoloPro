@@ -49,7 +49,7 @@ public struct TodayJobsPage: View {
                         .buttonStyle(.borderedProminent)
                         .controlSize(.large)
                     }
-                    .background(.background)
+                    .background(Color(uiColor: .secondarySystemGroupedBackground))
                 }
             }
             .navigationTitle("Today")

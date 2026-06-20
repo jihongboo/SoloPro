@@ -12,7 +12,7 @@ struct MapInformationView: View {
     let mapModel: TodayDestinationsMapModel
     
     var body: some View {
-        if let route = mapModel.currentRoute {
+        if let route = mapModel.route {
             let distance = Measurement(value: route.distance, unit: UnitLength.meters)
                 .converted(to: .miles)
             let distancePrecision: NumberFormatStyleConfiguration.Precision = distance.value < 10 ? .fractionLength(1) : .fractionLength(0)

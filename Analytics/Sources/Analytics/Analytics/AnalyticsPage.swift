@@ -61,7 +61,7 @@ public struct AnalyticsPage: View {
                         systemImage: "chart.line.uptrend.xyaxis",
                         description: Text("Complete jobs to start seeing work and income trends.")
                     )
-                    .background(.background)
+                    .background(Color(uiColor: .secondarySystemGroupedBackground))
                 }
             }
             .navigationTitle("Analytics")

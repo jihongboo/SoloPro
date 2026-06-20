@@ -49,8 +49,8 @@ private extension ContactView {
             phone
         } else if let email = contact.email, !email.isEmpty {
             email
-        } else if let address = contact.address, !address.isEmpty {
-            address
+        } else if !contact.address.isEmpty {
+            contact.address
         } else {
             nil
         }

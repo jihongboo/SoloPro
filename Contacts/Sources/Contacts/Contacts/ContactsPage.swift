@@ -118,7 +118,9 @@ private extension ContactsPage {
             contacts.name.localizedCaseInsensitiveContains(cleanSearchText) ||
             contacts.phone?.localizedCaseInsensitiveContains(cleanSearchText) == true ||
             contacts.email?.localizedCaseInsensitiveContains(cleanSearchText) == true ||
-            contacts.address?.localizedCaseInsensitiveContains(cleanSearchText) == true
+            contacts.location
+                .address
+                .localizedCaseInsensitiveContains(cleanSearchText) == true
         }
     }
     

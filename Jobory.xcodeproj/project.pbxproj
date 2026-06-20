@@ -10,9 +10,6 @@
 		FFB778B82FDD50F90047AD2D /* Model in Frameworks */ = {isa = PBXBuildFile; productRef = FFB778B72FDD50F90047AD2D /* Model */; };
 		FFB778BB2FDD51030047AD2D /* Job in Frameworks */ = {isa = PBXBuildFile; productRef = FFB778BA2FDD51030047AD2D /* Job */; };
 		FFB778BE2FDD510C0047AD2D /* Contacts in Frameworks */ = {isa = PBXBuildFile; productRef = FFB778BD2FDD510C0047AD2D /* Contacts */; };
-		FFB778C52FDD52450047AD2D /* CODE_STYLE.md in Resources */ = {isa = PBXBuildFile; fileRef = FFB778C12FDD52450047AD2D /* CODE_STYLE.md */; };
-		FFB778C62FDD52450047AD2D /* Technical Design.md in Resources */ = {isa = PBXBuildFile; fileRef = FFB778C32FDD52450047AD2D /* Technical Design.md */; };
-		FFB778C72FDD52450047AD2D /* Product Requirements Document.md in Resources */ = {isa = PBXBuildFile; fileRef = FFB778C22FDD52450047AD2D /* Product Requirements Document.md */; };
 		FFB778CA2FDD573E0047AD2D /* Analytics in Frameworks */ = {isa = PBXBuildFile; productRef = FFB778C92FDD573E0047AD2D /* Analytics */; };
 		FFFA60C72FDF0B35004075FC /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFFA60C62FDF0B35004075FC /* WidgetKit.framework */; };
 		FFFA60C92FDF0B35004075FC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFFA60C82FDF0B35004075FC /* SwiftUI.framework */; };
@@ -44,9 +41,6 @@
 
 /* Begin PBXFileReference section */
 		000000000000000000000120 /* Jobory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Jobory.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		FFB778C12FDD52450047AD2D /* CODE_STYLE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CODE_STYLE.md; sourceTree = "<group>"; };
-		FFB778C22FDD52450047AD2D /* Product Requirements Document.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Product Requirements Document.md"; sourceTree = "<group>"; };
-		FFB778C32FDD52450047AD2D /* Technical Design.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Technical Design.md"; sourceTree = "<group>"; };
 		FFFA60BF2FDF0954004075FC /* Jobory-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Jobory-Info.plist"; sourceTree = "<group>"; };
 		FFFA60C42FDF0B35004075FC /* JoboryWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = JoboryWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFFA60C62FDF0B35004075FC /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -106,7 +100,6 @@
 			children = (
 				FFFA610D2FDFA91E004075FC /* JoboryWidgetExtension.entitlements */,
 				FFFA60BF2FDF0954004075FC /* Jobory-Info.plist */,
-				FFB778C42FDD52450047AD2D /* Documents */,
 				000000000000000000000010 /* Jobory */,
 				FFFA60CA2FDF0B35004075FC /* JoboryWidget */,
 				FFFA60C52FDF0B35004075FC /* Frameworks */,
@@ -121,16 +114,6 @@
 				FFFA60C42FDF0B35004075FC /* JoboryWidgetExtension.appex */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		FFB778C42FDD52450047AD2D /* Documents */ = {
-			isa = PBXGroup;
-			children = (
-				FFB778C12FDD52450047AD2D /* CODE_STYLE.md */,
-				FFB778C22FDD52450047AD2D /* Product Requirements Document.md */,
-				FFB778C32FDD52450047AD2D /* Technical Design.md */,
-			);
-			path = Documents;
 			sourceTree = "<group>";
 		};
 		FFFA60C52FDF0B35004075FC /* Frameworks */ = {
@@ -242,9 +225,6 @@
 		000000000000000140000000 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			files = (
-				FFB778C52FDD52450047AD2D /* CODE_STYLE.md in Resources */,
-				FFB778C62FDD52450047AD2D /* Technical Design.md in Resources */,
-				FFB778C72FDD52450047AD2D /* Product Requirements Document.md in Resources */,
 			);
 		};
 		FFFA60C22FDF0B35004075FC /* Resources */ = {
@@ -431,7 +411,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Jobory;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "SoloPro uses your location to show where you are relative to today's job destinations.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Jobory uses your location to improve nearby address search results.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -477,7 +457,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Jobory;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "SoloPro uses your location to show where you are relative to today's job destinations.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Jobory uses your location to improve nearby address search results.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;

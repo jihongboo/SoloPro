@@ -14,15 +14,12 @@ public struct ContactFormPage: View {
     @State private var name = ""
     @State private var phone = ""
     @State private var email = ""
-    @State private var address = ""
-    @State private var latitude: Double?
-    @State private var longitude: Double?
+    @State private var location: Location?
     @State private var notes = ""
-    @State private var isPresentingLocationSearch = false
 
     private var canSave: Bool {
         !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
-        !address.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        location != nil
     }
     
     public init(mode: ContactFormPage.Mode) {
@@ -50,11 +47,7 @@ public struct ContactFormPage: View {
                 }
 
                 Section("Location") {
-                    LocationButton(
-                        address: $address,
-                        latitude: $latitude,
-                        longitude: $longitude
-                    )
+                    LocationButton(location: $location)
                 }
 
                 Section("Notes") {
@@ -77,13 +70,6 @@ public struct ContactFormPage: View {
                 }
             }
             .onAppear(perform: populateFields)
-            .sheet(isPresented: $isPresentingLocationSearch) {
-                LocationSearchPage(
-                    address: $address,
-                    latitude: $latitude,
-                    longitude: $longitude
-                )
-            }
         }
         .interactiveDismissDisabled()
     }
@@ -122,17 +108,15 @@ private extension ContactFormPage {
         name = customer.name
         phone = customer.phone ?? ""
         email = customer.email ?? ""
-        address = customer.address ?? ""
-        latitude = customer.latitude
-        longitude = customer.longitude
+        location = customer.location
         notes = customer.notes ?? ""
     }
 
     private func save() {
+        guard let location else { return }
         let cleanName = name.trimmingCharacters(in: .whitespacesAndNewlines)
         let cleanPhone = phone.trimmingCharacters(in: .whitespacesAndNewlines)
         let cleanEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
-        let cleanAddress = address.trimmingCharacters(in: .whitespacesAndNewlines)
         let cleanNotes = notes.trimmingCharacters(in: .whitespacesAndNewlines)
 
         switch mode {
@@ -141,9 +125,7 @@ private extension ContactFormPage {
                 name: cleanName,
                 phone: cleanPhone.nilIfEmpty,
                 email: cleanEmail.nilIfEmpty,
-                address: cleanAddress.nilIfEmpty,
-                latitude: cleanAddress.isEmpty ? nil : latitude,
-                longitude: cleanAddress.isEmpty ? nil : longitude,
+                location: location,
                 notes: cleanNotes.nilIfEmpty
             )
             modelContext.insert(customer)
@@ -152,9 +134,7 @@ private extension ContactFormPage {
             customer.name = cleanName
             customer.phone = cleanPhone.nilIfEmpty
             customer.email = cleanEmail.nilIfEmpty
-            customer.address = cleanAddress.nilIfEmpty
-            customer.latitude = cleanAddress.isEmpty ? nil : latitude
-            customer.longitude = cleanAddress.isEmpty ? nil : longitude
+            customer.location = location
             customer.notes = cleanNotes.nilIfEmpty
             self.contact = customer
         }

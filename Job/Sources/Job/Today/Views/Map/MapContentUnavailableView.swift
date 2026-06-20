@@ -18,8 +18,8 @@ struct MapContentUnavailableView: View {
                 "No Active Destinations",
                 systemImage: "map",
             )
-            .background(.background)
-        } else if !mapModel.hasLocationAuthorization {
+            .background(Color(uiColor: .secondarySystemGroupedBackground))
+        } else if !mapModel.hasAuthorization {
             ContentUnavailableView {
                 Label(locationPermissionTitle, systemImage: "location.circle")
             } description: {
@@ -28,7 +28,7 @@ struct MapContentUnavailableView: View {
                 Button(locationPermissionActionTitle, action: requestLocationAuthorization)
                     .buttonStyle(.borderedProminent)
             }
-            .background(.background)
+            .background(Color(uiColor: .secondarySystemGroupedBackground))
         }
     }
 }
@@ -39,13 +39,13 @@ struct MapContentUnavailableView: View {
 
 private extension MapContentUnavailableView {
     func requestLocationAuthorization() {
-        guard mapModel.requestLocationAuthorization(),
+        guard mapModel.requestAuthorization(),
               let settingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
         openURL(settingsURL)
     }
     
     var locationPermissionTitle: String {
-        switch mapModel.locationAuthorizationStatus {
+        switch mapModel.authorizationStatus {
         case .denied, .restricted:
             "Location Access Disabled"
         default:
@@ -54,7 +54,7 @@ private extension MapContentUnavailableView {
     }
     
     var locationPermissionDescription: String {
-        switch mapModel.locationAuthorizationStatus {
+        switch mapModel.authorizationStatus {
         case .denied, .restricted:
             "Enable location access in Settings to show where you are relative to today's destinations."
         default:
@@ -63,7 +63,7 @@ private extension MapContentUnavailableView {
     }
     
     var locationPermissionActionTitle: String {
-        switch mapModel.locationAuthorizationStatus {
+        switch mapModel.authorizationStatus {
         case .denied, .restricted:
             "Open Settings"
         default:

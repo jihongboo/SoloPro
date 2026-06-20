@@ -33,7 +33,7 @@ struct IncomeTrendView: View {
                     systemImage: "chart.bar.xaxis",
                 )
                 .frame(maxWidth: .infinity)
-                .background(.background)
+                .background(Color(uiColor: .secondarySystemGroupedBackground))
             }
         }
     }

@@ -15,9 +15,7 @@ struct JobFormPage: View {
     @State private var customerName = ""
     @State private var contact: Contact?
     @State private var date: Date = Date()
-    @State private var address: String = ""
-    @State private var latitude: Double?
-    @State private var longitude: Double?
+    @State private var location: Location?
     @State private var isPresentingLocationSearch = false
     @State private var priceText: String = ""
     @State private var notes: String = ""
@@ -27,9 +25,7 @@ struct JobFormPage: View {
     private var canSave: Bool {
         !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
         contact != nil &&
-        !address.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
-        latitude != nil &&
-        longitude != nil
+        location != nil
     }
 
     var body: some View {
@@ -51,11 +47,7 @@ struct JobFormPage: View {
                 }
 
                 Section("Location") {
-                    LocationButton(
-                        address: $address,
-                        latitude: $latitude,
-                        longitude: $longitude
-                    )
+                    LocationButton(location: $location)
                 }
 
                 Section("Payment") {
@@ -93,10 +85,7 @@ struct JobFormPage: View {
             .onAppear(perform: populateFields)
             .onChange(of: contact) {
                 guard let contact else { return }
-                
-                address = contact.address ?? ""
-                latitude = contact.latitude
-                longitude = contact.longitude
+                location = contact.location
             }
             .sheet(isPresented: $isPresentingContacts) {
                 ContactsPage(selection: $contact)
@@ -140,29 +129,25 @@ private extension JobFormPage {
         title = job.title
         contact = job.customer
         date = job.date
-        address = job.address
-        latitude = job.latitude
-        longitude = job.longitude
+        location = job.location
         priceText = job.price == 0 ? "" : String(format: "%.2f", job.price)
         notes = job.notes ?? ""
         status = job.status
     }
 
     private func save() {
+        guard let location else { return }
+        
         let cleanTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
-        let cleanAddress = address.trimmingCharacters(in: .whitespacesAndNewlines)
         let cleanNotes = notes.trimmingCharacters(in: .whitespacesAndNewlines)
         let price = Double(priceText.trimmingCharacters(in: .whitespacesAndNewlines)) ?? 0
-        guard let latitude, let longitude, let contact else { return }
 
         switch mode {
         case .create:
             let job = Job(
                 title: cleanTitle,
                 date: date,
-                address: cleanAddress,
-                latitude: latitude,
-                longitude: longitude,
+                location: location,
                 price: price,
                 notes: cleanNotes.nilIfEmpty,
                 status: status,
@@ -172,9 +157,7 @@ private extension JobFormPage {
         case let .edit(job):
             job.title = cleanTitle
             job.date = date
-            job.address = cleanAddress
-            job.latitude = latitude
-            job.longitude = longitude
+            job.location = location
             job.price = price
             job.notes = cleanNotes.nilIfEmpty
             job.status = status

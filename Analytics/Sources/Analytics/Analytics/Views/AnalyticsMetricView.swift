@@ -38,7 +38,10 @@ struct AnalyticsMetricView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8))
+        .background(
+            .background.secondary,
+            in: RoundedRectangle(cornerRadius: 8)
+        )
     }
 }
 

@@ -40,8 +40,8 @@ struct ContactPage: View {
                     contactLink(email, systemImage: "envelope", destination: emailURL(for: email))
                 }
 
-                if let address = contact.address, !address.isEmpty {
-                    contactLink(address, systemImage: "mappin.and.ellipse", destination: mapURL(for: address))
+                if !contact.address.isEmpty {
+                    contactLink(contact.address, systemImage: "mappin.and.ellipse", destination: mapURL(for: contact.address))
                 }
 
                 if !hasContactDetails {
@@ -135,7 +135,7 @@ private extension ContactPage {
     private var hasContactDetails: Bool {
         contact.phone?.isEmpty == false ||
         contact.email?.isEmpty == false ||
-        contact.address?.isEmpty == false
+        contact.address.isEmpty == false
     }
 
     private var tags: [ContactTag] {

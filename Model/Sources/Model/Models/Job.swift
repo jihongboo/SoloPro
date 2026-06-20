@@ -21,6 +21,17 @@ public final class Job {
     public var status: JobStatus = JobStatus.scheduled
     public var createdAt: Date = Date()
     public var customer: Contact?
+    
+    public var location: Location {
+        get {
+            .init(address: address, latitude: latitude, longitude: longitude)
+        }
+        set {
+            address = newValue.address
+            latitude = newValue.latitude
+            longitude = newValue.longitude
+        }
+    }
 
     public init(
         id: UUID = UUID(),
@@ -41,6 +52,28 @@ public final class Job {
         self.address = address
         self.latitude = latitude
         self.longitude = longitude
+        self.price = price
+        self.notes = notes
+        self.status = status
+        self.createdAt = createdAt
+        self.customer = customer
+    }
+    
+    public init(
+        id: UUID = UUID(),
+        title: String,
+        date: Date,
+        location: Location,
+        price: Double = 0,
+        notes: String? = nil,
+        status: JobStatus = .scheduled,
+        createdAt: Date = Date(),
+        customer: Contact? = nil
+    ) {
+        self.id = id
+        self.title = title
+        self.date = date
+        self.location = location
         self.price = price
         self.notes = notes
         self.status = status

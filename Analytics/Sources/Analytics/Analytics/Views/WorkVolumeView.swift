@@ -38,7 +38,7 @@ struct WorkVolumeView: View {
                     "No Completed Jobs",
                     systemImage: "chart.line.uptrend.xyaxis",
                 )
-                .background(.background)
+                .background(Color(uiColor: .secondarySystemGroupedBackground))
             }
         }
     }
