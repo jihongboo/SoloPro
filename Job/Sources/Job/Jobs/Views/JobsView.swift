@@ -79,9 +79,23 @@ struct JobsView: View {
 
 private extension JobsView {
     private var filteredJobs: [Job] {
-        guard selectedDateIntervals.count > 1 else { return jobs }
-        return jobs.filter { job in
-            selectedDateIntervals.contains { $0.contains(job.date) }
+        let dateFilteredJobs: [Job]
+        let selectedDateIntervals = selectedDateIntervals
+
+        if selectedDateIntervals.count > 1 {
+            dateFilteredJobs = jobs.filter { job in
+                selectedDateIntervals.contains { $0.contains(job.date) }
+            }
+        } else {
+            dateFilteredJobs = jobs
+        }
+
+        guard !searchQuery.isEmpty else { return dateFilteredJobs }
+        return dateFilteredJobs.filter { job in
+            job.title.localizedStandardContains(searchQuery) ||
+            job.address.localizedStandardContains(searchQuery) ||
+            job.notes?.localizedStandardContains(searchQuery) == true ||
+            job.customer?.name.localizedStandardContains(searchQuery) == true
         }
     }
 
@@ -102,8 +116,12 @@ private extension JobsView {
         dates.compactMap { selectedDateInterval(from: $0) }
     }
 
+    private var searchQuery: String {
+        searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
     private var emptyStateDescription: String {
-        if searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+        if searchQuery.isEmpty {
             "Try another date or status filter."
         } else {
             "Try another date, status filter, or search term."
@@ -141,11 +159,10 @@ private enum JobPredicate {
         searchText: String,
         calendar: Calendar,
     ) -> Predicate<Job>? {
-        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
         let dateBounds = dateFetchBounds(selectedDates: selectedDates, calendar: calendar)
         let statusBounds = statusFilter.statusRawValueBounds
 
-        guard dateBounds != nil || statusBounds != nil || !query.isEmpty else {
+        guard dateBounds != nil || statusBounds != nil else {
             return nil
         }
 
@@ -158,13 +175,7 @@ private enum JobPredicate {
             (startDate == nil || job.date >= startDate!) &&
             (endDate == nil || job.date < endDate!) &&
             (minimumStatusRawValue == nil || job.statusRawValue >= minimumStatusRawValue!) &&
-            (maximumStatusRawValue == nil || job.statusRawValue <= maximumStatusRawValue!) &&
-            (query.isEmpty ||
-                job.title.localizedStandardContains(query) ||
-                job.address.localizedStandardContains(query) ||
-                (job.notes?.localizedStandardContains(query) ?? false) ||
-                (job.customer?.name.localizedStandardContains(query) ?? false)
-            )
+            (maximumStatusRawValue == nil || job.statusRawValue <= maximumStatusRawValue!)
         }
     }
 
