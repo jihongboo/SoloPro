@@ -1,19 +1,66 @@
 import SwiftData
 import SwiftUI
+
 import Model
 
 public struct TodayJobsPage: View {
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var currentDate: Date
+    
+    public init(date: Date = Date()) {
+        _currentDate = State(initialValue: date)
+    }
+    
+    public var body: some View {
+        TodayJobsContent(date: currentDate)
+            .id(Calendar.current.startOfDay(for: currentDate))
+            .onAppear(perform: refreshCurrentDate)
+            .onChange(of: scenePhase) {
+                if scenePhase == .active {
+                    refreshCurrentDate()
+                }
+            }
+    }
+}
+
+#Preview(traits: .mock) {
+    TodayJobsPage()
+}
+
+#Preview("Empty") {
+    TodayJobsPage()
+}
+
+private extension TodayJobsPage {
+    func refreshCurrentDate() {
+        let now = Date()
+        if !Calendar.current.isDate(currentDate, inSameDayAs: now) {
+            currentDate = now
+        }
+    }
+}
+
+private struct TodayJobsContent: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Job.date) private var jobs: [Job]
+    @Query private var jobs: [Job]
     
     @State private var isPresentingJobForm = false
     @Namespace private var addJobTransition
     
     private let addJobSourceID = "add-job-button"
     
-    public init() {}
+    init(date: Date) {
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: date)
+        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) ?? date
+        let predicate = #Predicate<Job> { job in
+            job.date >= startOfDay && job.date < endOfDay
+        }
+
+        _jobs = Query(filter: predicate, sort: \.date)
+    }
     
-    public var body: some View {
+    var body: some View {
         NavigationStack {
             List {
                 Section {
@@ -83,27 +130,18 @@ public struct TodayJobsPage: View {
     }
 }
 
-#Preview {
-    TodayJobsPage()
-        .modelContainer(.mock)
-}
-
-#Preview("Empty") {
-    TodayJobsPage()
-}
-
-private extension TodayJobsPage {
-    private var todayJobs: [Job] {
-        jobs.filter { Calendar.current.isDateInToday($0.date) }
+private extension TodayJobsContent {
+    var todayJobs: [Job] {
+        jobs
     }
     
-    private var todayJobStatuses: [JobStatus] {
+    var todayJobStatuses: [JobStatus] {
         todayDisplayOrder.filter { status in
             todayJobs.contains { $0.status == status }
         }
     }
     
-    private var todayDisplayOrder: [JobStatus] {
+    var todayDisplayOrder: [JobStatus] {
         [
             .inProgress,
             .scheduled,
@@ -112,11 +150,11 @@ private extension TodayJobsPage {
         ]
     }
     
-    private func todayJobs(for status: JobStatus) -> [Job] {
+    func todayJobs(for status: JobStatus) -> [Job] {
         todayJobs.filter { $0.status == status }
     }
     
-    private func deleteJobs(at offsets: IndexSet, status: JobStatus) {
+    func deleteJobs(at offsets: IndexSet, status: JobStatus) {
         let sectionJobs = todayJobs(for: status)
         for index in offsets {
             modelContext.delete(sectionJobs[index])

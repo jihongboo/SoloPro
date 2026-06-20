@@ -4,10 +4,9 @@ import Model
 import Widgets
 
 public struct JobsPage: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Job.date) private var jobs: [Job]
+    @Environment(\.calendar) private var calendar
 
-    @State private var selectedDate: Date?
+    @State private var selectedDates: Set<DateComponents> = []
     @State private var statusFilter: JobStatusFilter = .all
     @State private var searchText = ""
     @State private var isPresentingDatePicker = false
@@ -19,39 +18,12 @@ public struct JobsPage: View {
     public init() {}
 
     public var body: some View {
-        List {
-            ForEach(jobDateSections) { dateSection in
-                Section(dateSection.title) {
-                    ForEach(dateSection.jobs) { job in
-                        NavigationLink(value: job) {
-                            JobRowView(job: job)
-                        }
-                    }
-                    .onDelete { offsets in
-                        deleteJobs(at: offsets, in: dateSection)
-                    }
-                }
-            }
-        }
-        .listStyle(.plain)
-        .overlay {
-            if filteredJobs.isEmpty {
-                ContentUnavailableView {
-                    Label("No Jobs Found", systemImage: "square.stack")
-                } description: {
-                    Text(emptyStateDescription)
-                } actions: {
-                    Button {
-                        isPresentingJobForm = true
-                    } label: {
-                        Label("Add Job", systemImage: "plus")
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-                }
-                .background(.background)
-            }
-        }
+        JobsView(
+            dates: selectedDates,
+            statusFilter: statusFilter,
+            searchText: searchText,
+            isPresentingJobForm: $isPresentingJobForm
+        )
         .navigationTitle("All Jobs")
         .searchable(text: $searchText, prompt: "Search jobs")
         .toolbar {
@@ -70,9 +42,9 @@ public struct JobsPage: View {
                         isPresentingDatePicker = true
                     }
 
-                    if selectedDate != nil {
+                    if !selectedDates.isEmpty {
                         Button("Clear Date Filter", systemImage: "calendar.badge.minus") {
-                            selectedDate = nil
+                            selectedDates = []
                         }
                     }
 
@@ -88,7 +60,7 @@ public struct JobsPage: View {
             }
         }
         .sheet(isPresented: $isPresentingDatePicker) {
-            DatePickerPage(selectedDate: $selectedDate)
+            DatePickerPage(selectedDates: $selectedDates)
                 .presentationDetents([.medium, .large])
         }
         .sheet(isPresented: $isPresentingJobForm) {
@@ -112,95 +84,29 @@ public struct JobsPage: View {
 }
 
 private extension JobsPage {
-    private var filteredJobs: [Job] {
-        jobs.filter { job in
-            dateFilterIncludes(job.date) &&
-            statusFilter.includes(job.status) &&
-            job.matchesSearch(searchText)
-        }
-    }
-
-    private var jobDateSections: [JobDateSection] {
-        let groupedJobs = Dictionary(grouping: filteredJobs) { job in
-            Calendar.current.startOfDay(for: job.date)
-        }
-
-        return groupedJobs.keys.sorted().map { date in
-            JobDateSection(
-                date: date,
-                jobs: groupedJobs[date, default: []].sorted { $0.date < $1.date }
-            )
-        }
-    }
-
-    private var selectedDateInterval: DateInterval? {
-        guard let selectedDate else { return nil }
-        return Calendar.current.dateInterval(of: .day, for: selectedDate) ?? fallbackDateInterval(for: selectedDate)
-    }
-
     private var dateFilterTitle: String {
-        guard let selectedDate else { return "All Dates" }
-        return selectedDate.formatted(.dateTime.month(.abbreviated).day().year())
-    }
+        let dates = selectedDates.compactMap { date(from: $0) }.sorted()
 
-    private var emptyStateDescription: String {
-        if searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            "Try another date or status filter."
-        } else {
-            "Try another date, status filter, or search term."
+        switch dates.count {
+        case 0:
+            return "All Dates"
+        case 1:
+            return dates[0].formatted(.dateTime.month(.abbreviated).day().year())
+        default:
+            return "\(dates.count) Dates"
         }
     }
 
-    private func dateFilterIncludes(_ date: Date) -> Bool {
-        guard let selectedDateInterval else { return true }
-        return selectedDateInterval.contains(date)
-    }
-
-    private func fallbackDateInterval(for date: Date) -> DateInterval {
-        DateInterval(start: date, duration: 24 * 60 * 60)
-    }
-
-    private func deleteJobs(at offsets: IndexSet, in dateSection: JobDateSection) {
-        for index in offsets {
-            modelContext.delete(dateSection.jobs[index])
-        }
+    private func date(from components: DateComponents) -> Date? {
+        calendar.date(from: DateComponents(
+            year: components.year,
+            month: components.month,
+            day: components.day
+        ))
     }
 }
 
-private extension Job {
-    func matchesSearch(_ searchText: String) -> Bool {
-        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !query.isEmpty else { return true }
-
-        return searchableValues.contains { value in
-            value.localizedCaseInsensitiveContains(query)
-        }
-    }
-
-    private var searchableValues: [String] {
-        [
-            title,
-            customer?.name,
-            address,
-            notes,
-            status.title,
-            price.formatted(.currency(code: "USD"))
-        ].compactMap { $0 }
-    }
-}
-
-private struct JobDateSection: Identifiable {
-    let date: Date
-    let jobs: [Job]
-
-    var id: Date { date }
-
-    var title: String {
-        date.formatted(.dateTime.weekday(.wide).month(.abbreviated).day().year())
-    }
-}
-
-private enum JobStatusFilter: String, CaseIterable, Identifiable {
+enum JobStatusFilter: String, CaseIterable, Identifiable {
     case all
     case incomplete
     case completed
@@ -234,16 +140,16 @@ private enum JobStatusFilter: String, CaseIterable, Identifiable {
         }
     }
 
-    func includes(_ status: JobStatus) -> Bool {
+    var statusRawValueBounds: (minimum: Int, maximum: Int)? {
         switch self {
         case .all:
-            true
+            nil
         case .incomplete:
-            status == .scheduled || status == .inProgress
+            (JobStatus.scheduled.rawValue, JobStatus.inProgress.rawValue)
         case .completed:
-            status == .completed
+            (JobStatus.completed.rawValue, JobStatus.completed.rawValue)
         case .canceled:
-            status == .canceled
+            (JobStatus.canceled.rawValue, JobStatus.canceled.rawValue)
         }
     }
 }

@@ -39,9 +39,12 @@ struct AdvanceJobStatusIntent: AppIntent {
 
         let container = try ModelContainer.makeShared()
         let context = ModelContext(container)
-        let descriptor = FetchDescriptor<Job>()
+        let predicate = #Predicate<Job> { job in
+            job.id == id
+        }
+        let descriptor = FetchDescriptor<Job>(predicate: predicate)
 
-        guard let job = try context.fetch(descriptor).first(where: { $0.id == id }) else {
+        guard let job = try context.fetch(descriptor).first else {
             return .result()
         }
 

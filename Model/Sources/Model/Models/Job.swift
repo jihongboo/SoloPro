@@ -10,6 +10,8 @@ import SwiftData
 
 @Model
 public final class Job {
+    #Index<Job>([\.date], [\.statusRawValue, \.date], [\.id], [\.title], [\.address])
+
     public var id: UUID = UUID()
     public var title: String = ""
     public var date: Date = Date()
@@ -18,10 +20,19 @@ public final class Job {
     public var longitude: Double = 0
     public var price: Double = 0
     public var notes: String?
-    public var status: JobStatus = JobStatus.scheduled
     public var createdAt: Date = Date()
     public var customer: Contact?
     
+    public var statusRawValue: Int = JobStatus.scheduled.rawValue
+    public var status: JobStatus {
+        get {
+            JobStatus(rawValue: statusRawValue) ?? .scheduled
+        }
+        set {
+            statusRawValue = newValue.rawValue
+        }
+    }
+
     public var location: Location {
         get {
             .init(address: address, latitude: latitude, longitude: longitude)
@@ -54,7 +65,7 @@ public final class Job {
         self.longitude = longitude
         self.price = price
         self.notes = notes
-        self.status = status
+        self.statusRawValue = status.rawValue
         self.createdAt = createdAt
         self.customer = customer
     }
@@ -76,7 +87,7 @@ public final class Job {
         self.location = location
         self.price = price
         self.notes = notes
-        self.status = status
+        self.statusRawValue = status.rawValue
         self.createdAt = createdAt
         self.customer = customer
     }

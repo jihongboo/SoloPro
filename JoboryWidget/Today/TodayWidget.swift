@@ -46,7 +46,7 @@ struct TodayWidgetView: View {
                 }
                 Spacer(minLength: 0)
             }
-            .frame(maxHeight: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .overlay {
                 if entry.jobs.isEmpty {
                     VStack(spacing: 8) {

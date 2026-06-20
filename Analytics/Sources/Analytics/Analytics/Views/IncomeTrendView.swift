@@ -20,6 +20,20 @@ struct IncomeTrendView: View {
             )
             .foregroundStyle(.green.gradient)
             .cornerRadius(4)
+
+            if let average {
+                RuleMark(y: .value("Average Income", average))
+                    .foregroundStyle(.green)
+                    .lineStyle(StrokeStyle(lineWidth: 1.5, dash: [5, 4]))
+                    .annotation(position: .top, alignment: .leading) {
+                        Text("Avg \(Text(average, format: .currency(code: Locale.current.currency?.identifier ?? "USD")))")
+                            .font(.caption2.weight(.semibold))
+                            .foregroundStyle(.green)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 3)
+                            .background(.thinMaterial, in: Capsule())
+                    }
+            }
         }
         .chartYAxis {
             AxisMarks(position: .leading)
@@ -36,6 +50,17 @@ struct IncomeTrendView: View {
                 .background(Color(uiColor: .secondarySystemGroupedBackground))
             }
         }
+    }
+}
+
+private extension IncomeTrendView {
+    var average: Double? {
+        guard !performanceData.isEmpty else { return nil }
+
+        let totalIncome = performanceData.map(\.income).reduce(0, +)
+        guard totalIncome > 0 else { return nil }
+
+        return totalIncome / Double(performanceData.count)
     }
 }
 

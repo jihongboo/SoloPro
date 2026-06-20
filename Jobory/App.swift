@@ -8,7 +8,8 @@ struct SoloProApp: App {
         WindowGroup {
             MainPage()
         }
-        .modelContainer(.shared)
+//        .modelContainer(.shared)
+        .modelContainer(.mock)
     }
 }
 

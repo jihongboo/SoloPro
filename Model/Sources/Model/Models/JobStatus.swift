@@ -9,13 +9,13 @@ import Foundation
 import SwiftData
 import SwiftUI
 
-public enum JobStatus: String, Codable, CaseIterable, Identifiable {
+public enum JobStatus: Int, Codable, CaseIterable, Identifiable {
     case scheduled
     case inProgress
     case completed
     case canceled
 
-    public var id: String { rawValue }
+    public var id: Int { rawValue }
 
     public var title: String {
         switch self {

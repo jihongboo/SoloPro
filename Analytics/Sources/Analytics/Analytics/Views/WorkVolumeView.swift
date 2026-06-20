@@ -19,13 +19,32 @@ struct WorkVolumeView: View {
                 y: .value("Jobs", item.jobCount)
             )
             .foregroundStyle(.blue)
-            .symbol(Circle())
 
             AreaMark(
                 x: .value(timeDimension.axisLabel, item.startDate, unit: timeDimension.chartUnit),
                 y: .value("Jobs", item.jobCount)
             )
-            .foregroundStyle(.blue.opacity(0.16))
+            .foregroundStyle(LinearGradient(
+                colors: [
+                    .blue.opacity(0.4),
+                    .clear],
+                startPoint: .top,
+                endPoint: .bottom
+            ))
+
+            if let average {
+                RuleMark(y: .value("Average Jobs", average))
+                    .foregroundStyle(.blue)
+                    .lineStyle(StrokeStyle(lineWidth: 1.5, dash: [5, 4]))
+                    .annotation(position: .top, alignment: .leading) {
+                        Text("Avg \(Text(average, format: .number.precision(.fractionLength(1))))")
+                            .font(.caption2.weight(.semibold))
+                            .foregroundStyle(.blue)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 3)
+                            .background(.thinMaterial, in: Capsule())
+                    }
+            }
         }
         .chartYAxis {
             AxisMarks(position: .leading)
@@ -41,6 +60,17 @@ struct WorkVolumeView: View {
                 .background(Color(uiColor: .secondarySystemGroupedBackground))
             }
         }
+    }
+}
+
+private extension WorkVolumeView {
+    var average: Double? {
+        guard !performanceData.isEmpty else { return nil }
+
+        let totalJobs = performanceData.map(\.jobCount).reduce(0, +)
+        guard totalJobs > 0 else { return nil }
+
+        return Double(totalJobs) / Double(performanceData.count)
     }
 }
 

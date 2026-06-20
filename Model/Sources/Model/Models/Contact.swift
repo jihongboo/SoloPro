@@ -10,6 +10,8 @@ import SwiftData
 
 @Model
 public final class Contact {
+    #Index<Contact>([\.name], [\.phone], [\.email], [\.address])
+
     public var id: UUID = UUID()
     public var name: String = ""
     public var phone: String?

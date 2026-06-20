@@ -10,39 +10,36 @@ import SwiftUI
 public struct DatePickerPage: View {
     @Environment(\.dismiss) private var dismiss
 
-    @Binding private var selectedDate: Date?
-    @State private var draftDate: Date
+    @Binding private var selectedDates: Set<DateComponents>
+    @State private var draftDates: Set<DateComponents>
 
-    public init(selectedDate: Binding<Date?>) {
-        _selectedDate = selectedDate
-        _draftDate = State(initialValue: selectedDate.wrappedValue ?? Date())
+    public init(selectedDates: Binding<Set<DateComponents>>) {
+        _selectedDates = selectedDates
+        _draftDates = State(initialValue: selectedDates.wrappedValue)
     }
 
     public var body: some View {
         NavigationStack {
             List {
                 Section {
-                    DatePicker(
-                        "Date",
-                        selection: $draftDate,
-                        displayedComponents: .date
-                    )
-                    .datePickerStyle(.graphical)
+                    MultiDatePicker("Dates", selection: $draftDates)
                 }
 
                 Section {
                     Button("Clear Selection") {
-                        selectedDate = nil
+                        selectedDates = []
+                        draftDates = []
                         dismiss()
                     }
+                    .disabled(selectedDates.isEmpty && draftDates.isEmpty)
                 }
             }
-            .navigationTitle("Select Date")
+            .navigationTitle("Select Dates")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
-                        selectedDate = draftDate
+                        selectedDates = draftDates
                         dismiss()
                     }
                 }
@@ -58,6 +55,6 @@ public struct DatePickerPage: View {
 }
 
 #Preview {
-    @Previewable @State var selectedDate: Date?
-    DatePickerPage(selectedDate: $selectedDate)
+    @Previewable @State var selectedDates: Set<DateComponents> = []
+    DatePickerPage(selectedDates: $selectedDates)
 }
