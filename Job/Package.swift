@@ -19,6 +19,7 @@ let package = Package(
         .package(path: "../Model"),
         .package(path: "../Widgets"),
         .package(path: "../AppFoundation"),
+        .package(path: "../Contacts"),
     ],
     targets: [
         .target(
@@ -27,6 +28,7 @@ let package = Package(
                 .product(name: "Model", package: "Model"),
                 .product(name: "Widgets", package: "Widgets"),
                 .product(name: "AppFoundation", package: "AppFoundation"),
+                .product(name: "Contacts", package: "Contacts"),
             ]
         )
     ]

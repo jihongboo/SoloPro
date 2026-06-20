@@ -18,6 +18,7 @@ struct ContactTagRowView: View {
             }
         }
         .scrollIndicators(.hidden)
+        .scrollClipDisabled()
     }
 }
 
@@ -73,7 +74,7 @@ enum ContactTag: String, CaseIterable, Identifiable {
         }
     }
 
-    static func tags(for customer: Customer) -> [ContactTag] {
+    static func tags(for customer: Contact) -> [ContactTag] {
         var tags: [ContactTag] = []
         let jobs = customer.jobs ?? []
         let completedJobs = jobs.filter { $0.status == .completed }

@@ -1,13 +1,15 @@
 import SwiftData
 import SwiftUI
+
 import Model
 import Widgets
 
-struct ContactFormPage: View {
+public struct ContactFormPage: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
-    let mode: ContactFormMode
+    let mode: ContactFormPage.Mode
+    @Binding var contact: Contact?
 
     @State private var name = ""
     @State private var phone = ""
@@ -19,10 +21,20 @@ struct ContactFormPage: View {
     @State private var isPresentingLocationSearch = false
 
     private var canSave: Bool {
-        !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+        !address.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+    
+    public init(mode: ContactFormPage.Mode) {
+        self.init(mode: mode, customer: .constant(nil))
     }
 
-    var body: some View {
+    public init(mode: ContactFormPage.Mode, customer: Binding<Contact?>) {
+        self.mode = mode
+        _contact = customer
+    }
+
+    public var body: some View {
         NavigationStack {
             Form {
                 Section("Customer") {
@@ -38,33 +50,11 @@ struct ContactFormPage: View {
                 }
 
                 Section("Location") {
-                    Button {
-                        isPresentingLocationSearch = true
-                    } label: {
-                        HStack {
-                            Label {
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(address.isEmpty ? "Add Location" : "Location")
-
-                                    if !address.isEmpty {
-                                        Text(address)
-                                            .font(.subheadline)
-                                            .foregroundStyle(.secondary)
-                                            .lineLimit(2)
-                                    }
-                                }
-                            } icon: {
-                                Image(systemName: "mappin.and.ellipse")
-                            }
-
-                            Spacer()
-
-                            Image(systemName: "chevron.right")
-                                .font(.footnote.weight(.semibold))
-                                .foregroundStyle(.tertiary)
-                        }
-                    }
-                    .foregroundStyle(.primary)
+                    LocationButton(
+                        address: $address,
+                        latitude: $latitude,
+                        longitude: $longitude
+                    )
                 }
 
                 Section("Notes") {
@@ -108,6 +98,22 @@ struct ContactFormPage: View {
         .modelContainer(.mock)
 }
 
+public extension ContactFormPage {
+    enum Mode {
+        case create
+        case edit(Contact)
+
+        var title: String {
+            switch self {
+            case .create:
+                "Add Contact"
+            case .edit:
+                "Edit Contact"
+            }
+        }
+    }
+}
+
 private extension ContactFormPage {
     private func populateFields() {
         guard case let .edit(customer) = mode, name.isEmpty else { return }
@@ -130,7 +136,7 @@ private extension ContactFormPage {
 
         switch mode {
         case .create:
-            let customer = Customer(
+            let customer = Contact(
                 name: cleanName,
                 phone: cleanPhone.nilIfEmpty,
                 email: cleanEmail.nilIfEmpty,
@@ -140,6 +146,7 @@ private extension ContactFormPage {
                 notes: cleanNotes.nilIfEmpty
             )
             modelContext.insert(customer)
+            self.contact = customer
         case let .edit(customer):
             customer.name = cleanName
             customer.phone = cleanPhone.nilIfEmpty
@@ -148,6 +155,7 @@ private extension ContactFormPage {
             customer.latitude = cleanAddress.isEmpty ? nil : latitude
             customer.longitude = cleanAddress.isEmpty ? nil : longitude
             customer.notes = cleanNotes.nilIfEmpty
+            self.contact = customer
         }
 
         dismiss()

@@ -52,7 +52,7 @@ private extension MainPage {
         #if DEBUG
         guard !isPreview, !didSeedSampleJobs else { return }
         [Job].mock.forEach(modelContext.insert)
-        [Customer].mock.forEach(modelContext.insert)
+        [Contact].mock.forEach(modelContext.insert)
         didSeedSampleJobs = true
         #endif
     }

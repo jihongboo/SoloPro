@@ -5,27 +5,48 @@ import Widgets
 
 public struct ContactsPage: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Customer.name) private var customers: [Customer]
-
+    @Environment(\.dismiss) private var dismiss
+    @Query(sort: \Contact.name) private var contacts: [Contact]
+    
+    private let state: Model
+    @Binding private var selection: Contact?
     @State private var searchText = ""
-    @State private var isPresentingCustomerForm = false
+    @State private var isPresentingContactForm = false
+    
     @Namespace private var addContactTransition
-
     private let addContactSourceID = "add-contact-button"
-
-    public init() {}
-
+    
+    public init(selection: Binding<Contact?>) {
+        _selection = selection
+        state = .selection
+    }
+    
+    public init() {
+        _selection = .constant(nil)
+        state = .root
+    }
+    
     public var body: some View {
         List {
-            ForEach(customerSections) { section in
+            ForEach(contactSections) { section in
                 Section(section.title) {
-                    ForEach(section.customers) { customer in
-                        NavigationLink(value: customer) {
-                            CustomerSuggestionRow(customer: customer)
+                    ForEach(section.contacts) { contact in
+                        switch state {
+                        case .root:
+                            NavigationLink(value: contact) {
+                                ContactView(contact)
+                            }
+                        case .selection:
+                            Button {
+                                selection = contact
+                                dismiss()
+                            } label: {
+                                ContactView(contact)
+                            }
                         }
                     }
                     .onDelete { offsets in
-                        deleteCustomers(in: section, at: offsets)
+                        deleteContacts(in: section, at: offsets)
                     }
                 }
                 .sectionIndexLabel(Text(section.indexLabel))
@@ -34,17 +55,15 @@ public struct ContactsPage: View {
         .listStyle(.plain)
         .listSectionIndexVisibility(.visible)
         .overlay {
-            if filteredCustomers.isEmpty {
+            if filteredContacts.isEmpty {
                 ContentUnavailableView {
                     Label(emptyStateTitle, systemImage: "person.crop.circle.badge.questionmark")
                 } description: {
                     Text(emptyStateDescription)
                 } actions: {
                     if searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                        Button {
-                            isPresentingCustomerForm = true
-                        } label: {
-                            Label("Add Contact", systemImage: "plus")
+                        Button("Add Contact", systemImage: "plus") {
+                            isPresentingContactForm = true
                         }
                         .buttonStyle(.borderedProminent)
                         .controlSize(.large)
@@ -56,18 +75,16 @@ public struct ContactsPage: View {
         .searchable(text: $searchText, prompt: "Search Contacts")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    isPresentingCustomerForm = true
-                } label: {
-                    Label("Add Contact", systemImage: "plus")
+                Button("Add Contact", systemImage: "plus") {
+                    isPresentingContactForm = true
                 }
             }
             .matchedTransitionSource(id: addContactSourceID, in: addContactTransition)
         }
-        .navigationDestination(for: Customer.self) { customer in
-            ContactPage(customer: customer)
+        .navigationDestination(for: Contact.self) { contact in
+            ContactPage(contact)
         }
-        .sheet(isPresented: $isPresentingCustomerForm) {
+        .sheet(isPresented: $isPresentingContactForm) {
             ContactFormPage(mode: .create)
                 .navigationTransition(.zoom(sourceID: addContactSourceID, in: addContactTransition))
         }
@@ -87,63 +104,73 @@ public struct ContactsPage: View {
     }
 }
 
-private extension ContactsPage {
-    private var filteredCustomers: [Customer] {
-        let cleanSearchText = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !cleanSearchText.isEmpty else { return customers }
+public extension ContactsPage {
+    enum Model {
+        case root
+        case selection
+    }
+}
 
-        return customers.filter { customer in
-            customer.name.localizedCaseInsensitiveContains(cleanSearchText) ||
-            customer.phone?.localizedCaseInsensitiveContains(cleanSearchText) == true ||
-            customer.email?.localizedCaseInsensitiveContains(cleanSearchText) == true ||
-            customer.address?.localizedCaseInsensitiveContains(cleanSearchText) == true
+private extension ContactsPage {
+    private var filteredContacts: [Contact] {
+        let cleanSearchText = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !cleanSearchText.isEmpty else { return contacts }
+        
+        return contacts.filter { contacts in
+            contacts.name.localizedCaseInsensitiveContains(cleanSearchText) ||
+            contacts.phone?.localizedCaseInsensitiveContains(cleanSearchText) == true ||
+            contacts.email?.localizedCaseInsensitiveContains(cleanSearchText) == true ||
+            contacts.address?.localizedCaseInsensitiveContains(cleanSearchText) == true
         }
     }
-
-    private var customerSections: [CustomerSection] {
-        let groupedCustomers = Dictionary(grouping: filteredCustomers, by: sectionTitle(for:))
-
-        return groupedCustomers
-            .map { CustomerSection(title: $0.key, customers: $0.value) }
+    
+    private var contactSections: [ContactSection] {
+        let groupedContacts = Dictionary(
+            grouping: filteredContacts,
+            by: sectionTitle(for:)
+        )
+        
+        return groupedContacts
+            .map { ContactSection(title: $0.key, contacts: $0.value) }
             .sorted { lhs, rhs in
                 if lhs.title == "#" { return false }
                 if rhs.title == "#" { return true }
                 return lhs.title.localizedStandardCompare(rhs.title) == .orderedAscending
             }
     }
-
+    
     private var listSectionTitle: String {
-        "\(filteredCustomers.count) Customers"
+        "\(filteredContacts.count) Customers"
     }
-
+    
     private var emptyStateTitle: String {
         searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? "No Contacts" : "No Contacts Found"
     }
-
+    
     private var emptyStateDescription: String {
         searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?
         "Add your first customer to keep jobs, notes, and contact details together." :
         "Try searching by name, phone, email, or address."
     }
-
-    private func sectionTitle(for customer: Customer) -> String {
-        let trimmedName = customer.name.trimmingCharacters(in: .whitespacesAndNewlines)
+    
+    private func sectionTitle(for contact: Contact) -> String {
+        let trimmedName = contact.name.trimmingCharacters(in: .whitespacesAndNewlines)
         guard let firstCharacter = trimmedName.first else { return "#" }
-
+        
         return String(firstCharacter).uppercased()
     }
-
-    private func deleteCustomers(in section: CustomerSection, at offsets: IndexSet) {
+    
+    private func deleteContacts(in section: ContactSection, at offsets: IndexSet) {
         for index in offsets {
-            modelContext.delete(section.customers[index])
+            modelContext.delete(section.contacts[index])
         }
     }
 }
 
-private struct CustomerSection: Identifiable {
+private struct ContactSection: Identifiable {
     let title: String
-    let customers: [Customer]
-
+    let contacts: [Contact]
+    
     var id: String { title }
     var indexLabel: String { title }
 }

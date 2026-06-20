@@ -1,38 +1,45 @@
 import SwiftData
 import SwiftUI
+
 import Model
+import Widgets
 
 struct ContactPage: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @Bindable var customer: Customer
+    @Bindable var contact: Contact
 
     @State private var isPresentingEditForm = false
+    
+    init(_ contact: Contact) {
+        self.contact = contact
+    }
 
     var body: some View {
         List {
             Section {
-                VStack(alignment: .leading, spacing: 10) {
-                    Text(customer.name)
-                        .font(.title2.bold())
+                VStack {
+                    AvatarView(contact, size: .large)
 
                     if !tags.isEmpty {
                         ContactTagRowView(tags: tags)
                     }
                 }
-                .padding(.vertical, 6)
+                .frame(maxWidth: .infinity)
+                .listRowBackground(Color.clear)
             }
+            .listSectionMargins(.top, 0)
 
             Section("Contact") {
-                if let phone = customer.phone, !phone.isEmpty {
+                if let phone = contact.phone, !phone.isEmpty {
                     Label(phone, systemImage: "phone")
                 }
 
-                if let email = customer.email, !email.isEmpty {
+                if let email = contact.email, !email.isEmpty {
                     Label(email, systemImage: "envelope")
                 }
 
-                if let address = customer.address, !address.isEmpty {
+                if let address = contact.address, !address.isEmpty {
                     Label(address, systemImage: "mappin.and.ellipse")
                 }
 
@@ -45,7 +52,7 @@ struct ContactPage: View {
             Section("Summary") {
                 LabeledContent("Completed Jobs", value: completedJobs.count.formatted())
                 LabeledContent("Lifetime Spend", value: lifetimeValue.formatted(.currency(code: "USD")))
-                LabeledContent("Customer Since", value: customer.createdAt.formatted(.dateTime.month(.abbreviated).day().year()))
+                LabeledContent("Customer Since", value: contact.createdAt.formatted(.dateTime.month(.abbreviated).day().year()))
             }
 
             if !sortedJobs.isEmpty {
@@ -70,7 +77,7 @@ struct ContactPage: View {
                 }
             }
 
-            if let notes = customer.notes, !notes.isEmpty {
+            if let notes = contact.notes, !notes.isEmpty {
                 Section("Notes") {
                     Text(notes)
                 }
@@ -78,14 +85,14 @@ struct ContactPage: View {
 
             Section {
                 Button(role: .destructive) {
-                    modelContext.delete(customer)
+                    modelContext.delete(contact)
                     dismiss()
                 } label: {
                     Label("Delete Contact", systemImage: "trash")
                 }
             }
         }
-        .navigationTitle("Contact Details")
+        .navigationTitle(contact.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -95,21 +102,21 @@ struct ContactPage: View {
             }
         }
         .sheet(isPresented: $isPresentingEditForm) {
-            ContactFormPage(mode: .edit(customer))
+            ContactFormPage(mode: .edit(contact))
         }
     }
 }
 
 #Preview {
     NavigationStack {
-        ContactPage(customer: .mock)
+        ContactPage(.mock)
     }
     .modelContainer(.mock)
 }
 
 private extension ContactPage {
     private var customerJobs: [Job] {
-        customer.jobs ?? []
+        contact.jobs ?? []
     }
 
     private var sortedJobs: [Job] {
@@ -125,12 +132,12 @@ private extension ContactPage {
     }
 
     private var hasContactDetails: Bool {
-        customer.phone?.isEmpty == false ||
-        customer.email?.isEmpty == false ||
-        customer.address?.isEmpty == false
+        contact.phone?.isEmpty == false ||
+        contact.email?.isEmpty == false ||
+        contact.address?.isEmpty == false
     }
 
     private var tags: [ContactTag] {
-        ContactTag.tags(for: customer)
+        ContactTag.tags(for: contact)
     }
 }

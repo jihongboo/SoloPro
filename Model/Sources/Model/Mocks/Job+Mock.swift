@@ -20,7 +20,7 @@ public extension Job {
         price: 120,
         notes: "Bring carpet cleaner.",
         status: .scheduled,
-        customer: Customer.john
+        customer: Contact.john
     )
     
     static let sinkRepair = Job(
@@ -31,7 +31,7 @@ public extension Job {
         longitude: 121.4494,
         price: 180,
         status: .inProgress,
-        customer: Customer.emma
+        customer: Contact.emma
     )
     
     static let exteriorPaintingEstimate = Job(
@@ -42,7 +42,7 @@ public extension Job {
         longitude: 121.4998,
         price: 75,
         status: .scheduled,
-        customer: Customer.david
+        customer: Contact.david
     )
     
     static let gutterCleaning = Job(
@@ -55,7 +55,7 @@ public extension Job {
         notes: "Completed ahead of schedule. Customer requested a follow-up quote for roof moss treatment.",
         status: .completed,
         createdAt: mockDate(daysFromToday: -7, hour: 10),
-        customer: Customer.john
+        customer: Contact.john
     )
     
     static let applianceInstall = Job(
@@ -67,7 +67,7 @@ public extension Job {
         price: 240,
         notes: "Building has limited loading access after 5 PM.",
         status: .scheduled,
-        customer: Customer.emma
+        customer: Contact.emma
     )
     
     static let deckInspection = Job(
@@ -91,7 +91,7 @@ public extension Job {
         notes: "Canceled by customer due to travel. Needs rescheduling next month.",
         status: .canceled,
         createdAt: mockDate(daysFromToday: -2, hour: 9, minute: 15),
-        customer: Customer.john
+        customer: Contact.john
     )
     
     static let cabinetTouchUp = Job(
@@ -103,7 +103,7 @@ public extension Job {
         price: 65,
         status: .completed,
         createdAt: mockDate(daysFromToday: -10, hour: 12),
-        customer: Customer.emma
+        customer: Contact.emma
     )
     
     private static func mockDate(daysFromToday: Int = 0, hour: Int, minute: Int = 0) -> Date {

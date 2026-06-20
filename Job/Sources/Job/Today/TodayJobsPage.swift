@@ -54,9 +54,7 @@ public struct TodayJobsPage: View {
         .navigationTitle("Today")
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                NavigationLink {
-                    JobsPage()
-                } label: {
+                NavigationLink(value: Route.jobs) {
                     Label("All Jobs", systemImage: "square.stack")
                 }
             }
@@ -72,6 +70,9 @@ public struct TodayJobsPage: View {
         }
         .navigationDestination(for: Job.self) { job in
             JobPage(job: job)
+        }
+        .navigationDestination(for: Route.self) { route in
+            JobsPage()
         }
         .sheet(isPresented: $isPresentingJobForm) {
             JobFormPage(mode: .create)

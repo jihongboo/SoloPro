@@ -15,13 +15,13 @@ public extension ModelContainer {
 
     static func makeShared() throws -> ModelContainer {
         let configuration = ModelConfiguration(
-            schema: Schema([Customer.self, Job.self]),
+            schema: Schema([Contact.self, Job.self]),
             groupContainer: .identifier(appGroupIdentifier),
             cloudKitDatabase: .private(cloudKitContainerIdentifier)
         )
 
         return try ModelContainer(
-            for: Customer.self,
+            for: Contact.self,
             Job.self,
             configurations: configuration
         )

@@ -20,7 +20,7 @@ public final class Job {
     public var notes: String?
     public var status: JobStatus = JobStatus.scheduled
     public var createdAt: Date = Date()
-    public var customer: Customer?
+    public var customer: Contact?
 
     public init(
         id: UUID = UUID(),
@@ -33,7 +33,7 @@ public final class Job {
         notes: String? = nil,
         status: JobStatus = .scheduled,
         createdAt: Date = Date(),
-        customer: Customer? = nil
+        customer: Contact? = nil
     ) {
         self.id = id
         self.title = title
