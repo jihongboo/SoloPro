@@ -1,0 +1,196 @@
+{
+  "features" : [
+    "refractivity"
+  ],
+  "fill" : {
+    "automatic-gradient" : "display-p3:1.00000,1.00000,1.00000,1.00000"
+  },
+  "groups" : [
+    {
+      "blur-material" : 0.1,
+      "layers" : [
+        {
+          "fill" : {
+            "solid" : "extended-srgb:1.00000,0.21961,0.23529,1.00000"
+          },
+          "glass" : false,
+          "image-name" : "Rectangle 5.svg",
+          "name" : "Rectangle 5",
+          "position" : {
+            "scale" : 0.8,
+            "translation-in-points" : [
+              240.09998543105598,
+              216.4338619783082
+            ]
+          }
+        },
+        {
+          "fill" : {
+            "solid" : "extended-gray:0.25000,1.00000"
+          },
+          "glass" : false,
+          "image-name" : "Rectangle 6.svg",
+          "name" : "Rectangle 6",
+          "position" : {
+            "scale" : 0.8,
+            "translation-in-points" : [
+              281.50017040917055,
+              276.3476550376039
+            ]
+          }
+        },
+        {
+          "fill" : {
+            "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
+          },
+          "image-name" : "Ellipse 1.svg",
+          "name" : "Ellipse 1",
+          "position" : {
+            "scale" : 0.8,
+            "translation-in-points" : [
+              240.09998543105587,
+              247.34767541935878
+            ]
+          }
+        },
+        {
+          "fill" : {
+            "solid" : "srgb:1.00000,1.00000,1.00000,0.00000"
+          },
+          "image-name" : "Ellipse 1.svg",
+          "name" : "Ellipse 1",
+          "position" : {
+            "scale" : 1.2,
+            "translation-in-points" : [
+              240.09998543105587,
+              247.34767541935878
+            ]
+          }
+        }
+      ],
+      "lighting" : "individual",
+      "name" : "Clock",
+      "position" : {
+        "scale" : 0.9,
+        "translation-in-points" : [
+          0,
+          0
+        ]
+      },
+      "refractivity" : {
+        "depth" : 0.0455859375,
+        "enabled" : true,
+        "strength" : 0.71921875
+      },
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.6
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.2
+      }
+    },
+    {
+      "layers" : [
+        {
+          "fill" : {
+            "solid" : "extended-srgb:1.00000,0.21961,0.23529,1.00000"
+          },
+          "glass" : false,
+          "image-name" : "Rectangle 1.svg",
+          "name" : "Rectangle 1",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              0,
+              -10.6171875
+            ]
+          }
+        },
+        {
+          "fill" : {
+            "solid" : "extended-gray:0.25000,1.00000"
+          },
+          "glass" : false,
+          "image-name" : "Rectangle 1.svg",
+          "name" : "Rectangle 1",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              0,
+              257.1592307279111
+            ]
+          }
+        },
+        {
+          "fill" : {
+            "solid" : "extended-gray:0.25000,1.00000"
+          },
+          "glass" : false,
+          "image-name" : "Rectangle 1.svg",
+          "name" : "Rectangle 1",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              0,
+              120.15141822791111
+            ]
+          }
+        },
+        {
+          "fill" : {
+            "solid" : "extended-gray:0.25000,1.00000"
+          },
+          "glass" : false,
+          "image-name" : "Rectangle 1.svg",
+          "name" : "Rectangle 1",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              0,
+              -143.9188942720889
+            ]
+          }
+        },
+        {
+          "fill" : {
+            "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
+          },
+          "glass" : true,
+          "image-name" : "Vector.svg",
+          "name" : "Vector",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              0,
+              0.25
+            ]
+          }
+        }
+      ],
+      "name" : "Clipboard",
+      "position" : {
+        "scale" : 0.94,
+        "translation-in-points" : [
+          0,
+          0
+        ]
+      },
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.6
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.2
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}
