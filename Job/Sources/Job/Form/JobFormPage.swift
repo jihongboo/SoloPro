@@ -102,6 +102,7 @@ struct JobFormPage: View {
                 ContactsPage(selection: $contact)
             }
         }
+        .interactiveDismissDisabled()
     }
 }
 

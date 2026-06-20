@@ -85,6 +85,7 @@ public struct ContactFormPage: View {
                 )
             }
         }
+        .interactiveDismissDisabled()
     }
 }
 

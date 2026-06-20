@@ -22,7 +22,7 @@ struct AvatarView: View {
         Text(initials)
             .font(size.font)
             .foregroundStyle(avatarColor)
-            .padding(size.padding)
+            .frame(width: size.size, height: size.size)
             .background(avatarColor.opacity(0.16), in: Circle())
     }
 }
@@ -44,16 +44,16 @@ extension AvatarView {
             case .small:
                     .headline.weight(.semibold)
             case .large:
-                    .largeTitle.weight(.semibold)
+                    .system(size: 80, weight: .bold)
             }
         }
         
-        var padding: CGFloat {
+        var size: CGFloat {
             switch self {
             case .small:
-                12
+                44
             case .large:
-                24
+                160
             }
         }
     }

@@ -14,84 +14,82 @@ public struct TodayJobsPage: View {
     public init() {}
     
     public var body: some View {
-        List {
-            Section {
-                JobsSummaryView(jobs: todayJobs)
-            }
-            
-            ForEach(todayJobStatuses) { status in
-                Section(status.title) {
-                    ForEach(todayJobs(for: status)) { job in
-                        NavigationLink(value: job) {
-                            JobRowView(job: job)
+        NavigationStack {
+            List {
+                Section {
+                    JobsSummaryView(jobs: todayJobs)
+                }
+                
+                ForEach(todayJobStatuses) { status in
+                    Section(status.title) {
+                        ForEach(todayJobs(for: status)) { job in
+                            NavigationLink(value: job) {
+                                JobRowView(job: job)
+                            }
                         }
-                    }
-                    .onDelete { offsets in
-                        deleteJobs(at: offsets, status: status)
+                        .onDelete { offsets in
+                            deleteJobs(at: offsets, status: status)
+                        }
                     }
                 }
             }
-        }
-        .listStyle(.insetGrouped)
-        .overlay {
-            if todayJobs.isEmpty {
-                ContentUnavailableView {
-                    Label("No Jobs Today", systemImage: "calendar.badge.plus")
-                } description: {
-                    Text("Add a job to start planning your workday.")
-                } actions: {
+            .listStyle(.insetGrouped)
+            .overlay {
+                if todayJobs.isEmpty {
+                    ContentUnavailableView {
+                        Label("No Jobs Today", systemImage: "calendar.badge.plus")
+                    } description: {
+                        Text("Add a job to start planning your workday.")
+                    } actions: {
+                        Button {
+                            isPresentingJobForm = true
+                        } label: {
+                            Label("Add Job", systemImage: "plus")
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+                    }
+                    .background(.background)
+                }
+            }
+            .navigationTitle("Today")
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    NavigationLink(value: Route.jobs) {
+                        Label("All Jobs", systemImage: "square.stack")
+                    }
+                }
+                
+                ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         isPresentingJobForm = true
                     } label: {
                         Label("Add Job", systemImage: "plus")
                     }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
                 }
-                .background(.background)
+                .matchedTransitionSource(id: addJobSourceID, in: addJobTransition)
             }
-        }
-        .navigationTitle("Today")
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                NavigationLink(value: Route.jobs) {
-                    Label("All Jobs", systemImage: "square.stack")
-                }
+            .navigationDestination(for: Job.self) { job in
+                JobPage(job: job)
             }
-            
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    isPresentingJobForm = true
-                } label: {
-                    Label("Add Job", systemImage: "plus")
-                }
+            .navigationDestination(for: Route.self) { route in
+                JobsPage()
             }
-            .matchedTransitionSource(id: addJobSourceID, in: addJobTransition)
-        }
-        .navigationDestination(for: Job.self) { job in
-            JobPage(job: job)
-        }
-        .navigationDestination(for: Route.self) { route in
-            JobsPage()
-        }
-        .sheet(isPresented: $isPresentingJobForm) {
-            JobFormPage(mode: .create)
-                .navigationTransition(.zoom(sourceID: addJobSourceID, in: addJobTransition))
+            .sheet(isPresented: $isPresentingJobForm) {
+                JobFormPage(mode: .create)
+                    .navigationTransition(.zoom(sourceID: addJobSourceID, in: addJobTransition))
+            }
         }
     }
 }
 
 #Preview {
-    NavigationStack {
-        TodayJobsPage()
-            .modelContainer(.mock)
-    }
+    TodayJobsPage()
+        .modelContainer(.mock)
 }
 
 #Preview("Empty") {
-    NavigationStack {
-        TodayJobsPage()
-    }
+    TodayJobsPage()
 }
 
 private extension TodayJobsPage {

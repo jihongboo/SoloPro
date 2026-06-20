@@ -1,3 +1,4 @@
+import Foundation
 import SwiftData
 import SwiftUI
 
@@ -32,15 +33,15 @@ struct ContactPage: View {
 
             Section("Contact") {
                 if let phone = contact.phone, !phone.isEmpty {
-                    Label(phone, systemImage: "phone")
+                    contactLink(phone, systemImage: "phone", destination: phoneURL(for: phone))
                 }
 
                 if let email = contact.email, !email.isEmpty {
-                    Label(email, systemImage: "envelope")
+                    contactLink(email, systemImage: "envelope", destination: emailURL(for: email))
                 }
 
                 if let address = contact.address, !address.isEmpty {
-                    Label(address, systemImage: "mappin.and.ellipse")
+                    contactLink(address, systemImage: "mappin.and.ellipse", destination: mapURL(for: address))
                 }
 
                 if !hasContactDetails {
@@ -139,5 +140,35 @@ private extension ContactPage {
 
     private var tags: [ContactTag] {
         ContactTag.tags(for: contact)
+    }
+
+    @ViewBuilder
+    private func contactLink(_ title: String, systemImage: String, destination: URL?) -> some View {
+        if let destination {
+            Link(destination: destination) {
+                Label(title, systemImage: systemImage)
+            }
+        } else {
+            Label(title, systemImage: systemImage)
+        }
+    }
+
+    private func phoneURL(for phone: String) -> URL? {
+        let dialableCharacters = CharacterSet(charactersIn: "+*#0123456789,;")
+        let dialablePhone = phone.unicodeScalars.filter { dialableCharacters.contains($0) }
+        return URL(string: "tel:\(String(String.UnicodeScalarView(dialablePhone)))")
+    }
+
+    private func emailURL(for email: String) -> URL? {
+        var components = URLComponents()
+        components.scheme = "mailto"
+        components.path = email
+        return components.url
+    }
+
+    private func mapURL(for address: String) -> URL? {
+        var components = URLComponents(string: "http://maps.apple.com/")
+        components?.queryItems = [URLQueryItem(name: "q", value: address)]
+        return components?.url
     }
 }

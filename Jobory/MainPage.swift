@@ -15,45 +15,26 @@ import Model
 import AppFoundation
 
 struct MainPage: View {
-    @AppStorage("didSeedSampleJobs") private var didSeedSampleJobs = false
     @Environment(\.modelContext) private var modelContext
 
     var body: some View {
         TabView {
             Tab("Today", systemImage: "calendar") {
-                NavigationStack {
-                    TodayJobsPage()
-                }
+                TodayJobsPage()
             }
             
             Tab("Contacts", systemImage: "person.2") {
-                NavigationStack {
-                    ContactsPage()
-                }
+                ContactsPage()
             }
             
             Tab("Analytics", systemImage: "chart.line.uptrend.xyaxis") {
-                NavigationStack {
-                    AnalyticsPage()
-                }
+                AnalyticsPage()
             }
         }
-//        .task(seedSampleJobsIfNeeded)
     }
 }
 
 #Preview {
     MainPage()
         .modelContainer(.mock)
-}
-
-private extension MainPage {
-    func seedSampleJobsIfNeeded() {
-        #if DEBUG
-        guard !isPreview, !didSeedSampleJobs else { return }
-        [Job].mock.forEach(modelContext.insert)
-        [Contact].mock.forEach(modelContext.insert)
-        didSeedSampleJobs = true
-        #endif
-    }
 }

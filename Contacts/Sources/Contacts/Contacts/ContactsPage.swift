@@ -27,81 +27,79 @@ public struct ContactsPage: View {
     }
     
     public var body: some View {
-        List {
-            ForEach(contactSections) { section in
-                Section(section.title) {
-                    ForEach(section.contacts) { contact in
-                        switch state {
-                        case .root:
-                            NavigationLink(value: contact) {
-                                ContactView(contact)
-                            }
-                        case .selection:
-                            Button {
-                                selection = contact
-                                dismiss()
-                            } label: {
-                                ContactView(contact)
+        NavigationStack {
+            List {
+                ForEach(contactSections) { section in
+                    Section(section.title) {
+                        ForEach(section.contacts) { contact in
+                            switch state {
+                            case .root:
+                                NavigationLink(value: contact) {
+                                    ContactView(contact)
+                                }
+                            case .selection:
+                                Button {
+                                    selection = contact
+                                    dismiss()
+                                } label: {
+                                    ContactView(contact)
+                                }
                             }
                         }
-                    }
-                    .onDelete { offsets in
-                        deleteContacts(in: section, at: offsets)
-                    }
-                }
-                .sectionIndexLabel(Text(section.indexLabel))
-            }
-        }
-        .listStyle(.plain)
-        .listSectionIndexVisibility(.visible)
-        .overlay {
-            if filteredContacts.isEmpty {
-                ContentUnavailableView {
-                    Label(emptyStateTitle, systemImage: "person.crop.circle.badge.questionmark")
-                } description: {
-                    Text(emptyStateDescription)
-                } actions: {
-                    if searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                        Button("Add Contact", systemImage: "plus") {
-                            isPresentingContactForm = true
+                        .onDelete { offsets in
+                            deleteContacts(in: section, at: offsets)
                         }
-                        .buttonStyle(.borderedProminent)
-                        .controlSize(.large)
+                    }
+                    .sectionIndexLabel(Text(section.indexLabel))
+                }
+            }
+            .listStyle(.plain)
+            .listSectionIndexVisibility(.visible)
+            .overlay {
+                if filteredContacts.isEmpty {
+                    ContentUnavailableView {
+                        Label(emptyStateTitle, systemImage: "person.crop.circle.badge.questionmark")
+                    } description: {
+                        Text(emptyStateDescription)
+                    } actions: {
+                        if searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                            Button("Add Contact", systemImage: "plus") {
+                                isPresentingContactForm = true
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .controlSize(.large)
+                        }
                     }
                 }
             }
-        }
-        .navigationTitle("Contacts")
-        .searchable(text: $searchText, prompt: "Search Contacts")
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("Add Contact", systemImage: "plus") {
-                    isPresentingContactForm = true
+            .navigationTitle("Contacts")
+            .searchable(text: $searchText, prompt: "Search Contacts")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Add Contact", systemImage: "plus") {
+                        isPresentingContactForm = true
+                    }
                 }
+                .matchedTransitionSource(id: addContactSourceID, in: addContactTransition)
             }
-            .matchedTransitionSource(id: addContactSourceID, in: addContactTransition)
-        }
-        .navigationDestination(for: Contact.self) { contact in
-            ContactPage(contact)
-        }
-        .sheet(isPresented: $isPresentingContactForm) {
-            ContactFormPage(mode: .create)
-                .navigationTransition(.zoom(sourceID: addContactSourceID, in: addContactTransition))
+            .navigationDestination(for: Contact.self) { contact in
+                ContactPage(contact)
+            }
+            .sheet(isPresented: $isPresentingContactForm) {
+                ContactFormPage(mode: .create)
+                    .navigationTransition(.zoom(sourceID: addContactSourceID, in: addContactTransition))
+            }
         }
     }
 }
 
 #Preview {
-    NavigationStack {
-        ContactsPage()
-    }
-    .modelContainer(.mock)
+    ContactsPage()
+        .modelContainer(.mock)
 }
 
 #Preview("Empty") {
-    NavigationStack {
-        ContactsPage()
-    }
+    ContactsPage()
 }
 
 public extension ContactsPage {
