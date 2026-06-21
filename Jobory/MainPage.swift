@@ -31,6 +31,7 @@ struct MainPage: View {
                 AnalyticsPage()
             }
         }
+        .tabViewStyle(.sidebarAdaptable)
     }
 }
 
